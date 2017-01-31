@@ -1,5 +1,8 @@
 % TODO 
 % simplification of broder macro
+% 31 Jan 2017, Ver 0.58
+% default faculty and deptartment added and corresponding macros for defining them as desired
+% macros for title setting are moved to preamble
 % 21 Jan 2017, Ver 0.56
 % a macro for better representing of clock
 % 20 Jan 2017, Ver 0.55
@@ -27,7 +30,7 @@
 % 28 Dec 2016, Ver 0.1
 % Initial release
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{unistyle}[2016/01/21 v0.56 Exam, Coures Syllabus, and Excercise Style for Universities]
+\ProvidesClass{unistyle}[2016/01/31 v0.58 Exam, Coures Syllabus, and Excercise Style for Universities]
 \RequirePackage{biditools}
 \RequirePackage{tikz}
 \RequirePackage{pgfornament}
@@ -78,6 +81,7 @@ shape aspect=2 ]
     \PersianAlphs%
 %%%%%    \maketitle (without the titlepage class option) internally uses \thispagestyle{plain} which locally overrides \pagestyle{empty}. Add \thispagestyle{empty} immediately after \maketitle.
     \bidi@appto\maketitle{\thispagestyle{empty}}
+    \let\uni@date\today%\@empty
 }
 \parindent=0pt%
 %\bidi@AfterEndPreamble{\null\setRTL\null}
@@ -159,16 +163,28 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
     \node at  (0, 0) {\includegraphics[width=.1\textwidth]{logo}};
 \end{tikzpicture}}
 %\long\def\tbox#1{\noindent\par\fbox{\Shafigh{#1}}\par}
-\def\uni@course\relax
-\def\uni@title\relax
-\def\uni@major\relax
-\def\uni@date\relax
-\def\uni@semester\relax
-\def\uni@year\relax
-\def\uni@time\relax
-\def\uni@type\relax
+\let\uni@course\@empty
+\let\uni@title\@empty
+\let\uni@major\@empty
+%\let\uni@date\@empty
+\let\uni@semester\@empty
+\let\uni@year\@empty
+\let\uni@time\@empty
+\let\uni@type\@empty
 \def\uni@faculty{علوم‌پایه}
 \def\uni@deptartment{علوم‌کامپیوتر}
+%
+\@onlypreamble{\etitle}
+\@onlypreamble{\ecourse}
+\@onlypreamble{\emajor}
+\@onlypreamble{\edate}
+\@onlypreamble{\esemester}
+\@onlypreamble{\eyear}
+\@onlypreamble{\etime}
+\@onlypreamble{\etype}
+\@onlypreamble{\logo}
+\@onlypreamble{\efaculty}
+\@onlypreamble{\edepartment}
 %
 \def\etitle#1{\def\uni@title{#1}}
 \def\ecourse#1{\def\uni@course{#1}}
@@ -178,14 +194,17 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \def\eyear#1{\def\uni@year{#1}}
 \def\etime#1{\def\uni@time{#1}}
 \def\etype#1{\def\uni@type{#1}}
+\def\efaculty#1{\def\uni@faculty{#1}}
+\def\edepartment#1{\def\uni@deptartment{#1}}
 \def\uni@univlogo#1{\includegraphics[width=1.2cm]{#1}}
-\def\logo{\uni@univlogo{logo}}
+\def\logo#1{\uni@univlogo{#1}}
 %
 \newcommand{\MakeTitle}{%\phantom{leavevmode}
 \centerline{\Homa{\scriptsize  به نام خدا}}
 \centerline{\uni@univlogo{logo}}
-\vspace{-.3cm}\centerline{\tiny دانشکده علوم‌پایه}
-\vspace{-.2cm}\centerline{\tiny گروه علوم‌کامپیوتر}
+%\vspace{-.3cm}\centerline{\tiny دانشکده علوم‌پایه}
+\vspace{-.3cm}\centerline{\tiny دانشکده \uni@faculty}
+\vspace{-.2cm}\centerline{\tiny گروه \uni@deptartment}
 \centerline{\textbf{\tiny آزمون \uni@type}}
 \vspace{-2cm}
 \noindent
