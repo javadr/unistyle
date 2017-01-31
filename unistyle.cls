@@ -1,8 +1,9 @@
 % TODO 
 % simplification of broder macro
-% 31 Jan 2017, Ver 0.58
+% 31 Jan 2017, Ver 0.6
 % default faculty and deptartment added and corresponding macros for defining them as desired
 % macros for title setting are moved to preamble
+% default day is set \today in case of not using edate macro
 % 21 Jan 2017, Ver 0.56
 % a macro for better representing of clock
 % 20 Jan 2017, Ver 0.55
@@ -30,7 +31,7 @@
 % 28 Dec 2016, Ver 0.1
 % Initial release
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{unistyle}[2016/01/31 v0.58 Exam, Coures Syllabus, and Excercise Style for Universities]
+\ProvidesClass{unistyle}[2016/01/31 v0.6 Exam, Coures Syllabus, and Excercise Style for Universities]
 \RequirePackage{biditools}
 \RequirePackage{tikz}
 \RequirePackage{pgfornament}
@@ -81,7 +82,6 @@ shape aspect=2 ]
     \PersianAlphs%
 %%%%%    \maketitle (without the titlepage class option) internally uses \thispagestyle{plain} which locally overrides \pagestyle{empty}. Add \thispagestyle{empty} immediately after \maketitle.
     \bidi@appto\maketitle{\thispagestyle{empty}}
-    \let\uni@date\today%\@empty
 }
 \parindent=0pt%
 %\bidi@AfterEndPreamble{\null\setRTL\null}
@@ -166,7 +166,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \let\uni@course\@empty
 \let\uni@title\@empty
 \let\uni@major\@empty
-%\let\uni@date\@empty
+\let\uni@date\@empty
 \let\uni@semester\@empty
 \let\uni@year\@empty
 \let\uni@time\@empty
@@ -210,7 +210,8 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \noindent
 \makebox[4cm][r]{نام و نام خانوادگی:}\hfill       \makebox[4cm][l]{ سالِ تحصیلی: \uni@year}\newline
 \makebox[4cm][r]{شماره‌ٔ دانشجویی:}\hfill        \makebox[4cm][l]{ نيمسالِ \uni@semester}\newline
-\makebox[4cm][r]{\textbf{\uni@course}}    \hfill        \makebox[4cm][l]{{\uni@date}}\newline
+\makebox[4cm][r]{\textbf{\uni@course}}    \hfill  
+\makebox[4cm][l]{{\ifx\uni@date\@empty\today\else\uni@date\fi}}\newline
 \makebox[4cm][r]{\uni@major}\hfill\makebox[4cm][l]{ وقـت: {\textbf{\uni@time}} دقيقه}\newline
 \hrule  height .4mm  %\vspace{ 3mm }
 \null
