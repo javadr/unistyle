@@ -1,5 +1,7 @@
 % TODO 
 % simplification of broder macro
+% 11 Feb 2017, Ver 0.61
+% another sentence for kalamehakim macro. 
 % 31 Jan 2017, Ver 0.6
 % default faculty and deptartment added and corresponding macros for defining them as desired
 % macros for title setting are moved to preamble
@@ -31,7 +33,7 @@
 % 28 Dec 2016, Ver 0.1
 % Initial release
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{unistyle}[2016/01/31 v0.6 Exam, Coures Syllabus, and Excercise Style for Universities]
+\ProvidesClass{unistyle}[2016/02/11 v0.61 Exam, Coures Syllabus, and Excercise Style for Universities]
 \RequirePackage{biditools}
 \RequirePackage{tikz}
 \RequirePackage{pgfornament}
@@ -445,6 +447,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \or{بقراط: فرومایگی شخص از دو چیز مشخص می‌شود: $1$- بیهوده سخن گفتن $2$- نپرسیده جواب دادن}%
 \or{حضرت علی\a: ما اکثر العبر و اقل الاعتبار (عبرت‌ها چه‌ بسيار است‌ و پند گرفتن‌‌ها چقدر کم!)}%
 \or{حضرت علی\a: اندیشیدن همانند دیدن نیست، زیرا گاهی چشم‌ها دروغ می‌نمایاند، اما آن کس که از عقل نصیحت خواهد به او خیانت نمی‌کند. حکمت ۲۷۳}%
+\or{رسول اکرم \s: بهترین مردم کسی است که مردم از او بهره‌مند شوند.}%
 \fi%
 }}
 }
