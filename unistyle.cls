@@ -1,5 +1,9 @@
 % TODO 
 % simplification of broder macro
+% 30 Apr 2017, Ver 0.7
+% grid option and a grid in the background for better justificaion of objects by user. 
+% 30 Apr 2017, Ver 0.62
+% \ndots macro puts bdots in a horizontal box of 14mm length, it's useful for fill in the blank question. 
 % 11 Feb 2017, Ver 0.61
 % another sentence for kalamehakim macro. 
 % 31 Jan 2017, Ver 0.6
@@ -37,12 +41,14 @@
 \RequirePackage{biditools}
 \RequirePackage{tikz}
 \RequirePackage{pgfornament}
+\RequirePackage{calc}
 \usetikzlibrary{calc, shadows, positioning, backgrounds}
 \RequirePackage{bidi-atbegshi} %must be loaded after tikz
 \RequirePackage{fancybox}
 \newif\if@uni@decorate
 \newif\if@uni@noborder
 \newif\if@uni@key
+\newif\if@uni@grid
 \DeclareOption{a5paper}{\PassOptionsToPackage{a5paper}{geometry}}
 \DeclareOption{a4paper}{\PassOptionsToPackage{a4paper}{geometry}}
 \DeclareOption{decorate}{\@uni@decoratetrue}
@@ -62,8 +68,10 @@ shape aspect=2 ]
 %    append after command={[rounded corners=3pt](\tikzlastnode.north)-|(\tikzlastnode.east)},
 %    append after command={[rounded corners=10pt](\tikzlastnode.east)|-(\tikzlastnode.south)},
 %    append after command={[rounded corners=5pt](\tikzlastnode.south)-|(\tikzlastnode.west)}} ]
-\tikzstyle{arrow} = [thick,->,>=stealth]}
+\tikzstyle{arrow} = [thick,->,>=stealth]%
+}
 \DeclareOption{key}{\@uni@keytrue}
+\DeclareOption{grid}{\@uni@gridtrue}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ExecuteOptions{a4paper}
 \ExecuteOptions{decorate}
@@ -312,6 +320,14 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \if@uni@key%
     \node [color=gray, scale=\textwidth/1.1cm, rotate=45,font=\persianfont\normalsize, opacity=.3] at ($(current page.center)$) {پاسخنامه};
 \fi%
+\if@uni@grid% draw a grid in the background of the paper. 
+    \foreach \y in {0.0, 0.01, ..., 1.0}%
+    {\draw[draw=gray,draw opacity=0.7] ($(current page.south west)+(\y\paperwidth,0pt)$) %
+         -- ($(current page.south west)+(\y\paperwidth,\paperheight)$);}%
+    \foreach \y in {0.0, 0.01, ..., 1.0}%
+    {\draw[draw=gray,draw opacity=0.7] ($(current page.south west)+(0pt,\y\paperheight)$) %
+         -- ($(current page.south west)+(\paperwidth,\y\paperheight)$);}%    
+\fi%
     \end{tikzpicture}%
 }}
 %
@@ -354,6 +370,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 %
 %
 \def\DOTS{\hbox to 4cm {\dotfill}}%
+\def\bdots{\leavevmode\hbox to 14mm {\dotfill}}
 %
 \newcounter{uni@t@lct}%
 \newcounter{uni@t@row}%
@@ -406,7 +423,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
     \end{center} 
 }
 %
-\def\grade#1{\hfill{($#1$~نمره)}}
+\def\grade#1{\null\hfill{($#1$~نمره)}}
 %
 \long\def\sign{%
 \begin{flushleft}
