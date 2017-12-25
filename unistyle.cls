@@ -1,5 +1,9 @@
 % TODO 
 % simplification of broder macro
+% 25 Dec 2017, Ver 0.8
+% some improvements in getting exam parameters, 
+% text main font changed to IRXLotus
+% \sign macro has an optional argument which can get the name of instructor. 
 % 5 Sep 2017, Ver 0.74
 % another improvement in kalamehakim macro, so it can typset text with width more that \textwidth in shadowbox.
 % 5 Jun 2017, Ver 0.72
@@ -41,7 +45,10 @@
 % 28 Dec 2016, Ver 0.1
 % Initial release
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{unistyle}[2016/02/11 v0.61 Exam, Coures Syllabus, and Excercise Style for Universities]
+\def\uni@date{2017/12/25}
+\def\uni@version{0.8}
+\ProvidesClass{unistyle}[\uni@date\space version  \uni@version\space
+Exam, Coures Syllabus, and Excercise Style for Universities]
 \RequirePackage{biditools}
 \RequirePackage{tikz}
 \RequirePackage{pgfornament}
@@ -80,10 +87,25 @@ shape aspect=2 ]
 \ExecuteOptions{a4paper}
 \ExecuteOptions{decorate}
 \ProcessOptions
-\LoadClass{article}   
+\LoadClass[a4paper, 10pt]{article}   
+\RequirePackage{keyval}
+\define@key{unistyle}{عنوان}{\def\uni@title{#1}}
+\define@key{unistyle}{عنوان درس}{\def\uni@course{#1}}
+\define@key{unistyle}{مقطع و رشته}{\def\uni@major{#1}}
+\define@key{unistyle}{روز و تاریخ}{\def\uni@date{#1}}
+\define@key{unistyle}{ترم}{\def\uni@semester{\ifcase#1{}\or{اول}\or{دوم}\or{تابستان}\fi}}
+\define@key{unistyle}{سال تحصیلی}{\def\uni@year{#1}}
+\define@key{unistyle}{مدت امتحان}{\def\uni@time{#1}}
+\define@key{unistyle}{نوع آزمون}{\def\uni@type{#1}}
+\define@key{unistyle}{دانشکده}{\def\uni@faculty{#1}}
+\define@key{unistyle}{گروه}{\def\uni@deptartment{#1}}
+\define@key{unistyle}{لوگوی دانشگاه}{\uni@univlogo{#1}}
+\newcommand{\unidetails}{\setkeys{unistyle}}
+\@onlypreamble\unidetails
 \bidi@AtEndPreamble{%
     \RequirePackage{xepersian}%
-    \settextfont[Scale=1]{XB Niloofar}%
+%    \settextfont[Scale=1]{XB Niloofar}%
+    \settextfont[Scale=1.2]{IRXLotus}%
     \setdigitfont{Yas}%
     \defpersianfont\Pook{XB Kayhan Sayeh}%
     \defpersianfont\BKamraan[Scale=1]{BKamran}%
@@ -92,7 +114,7 @@ shape aspect=2 ]
     \defpersianfont\Yas[Scale=1]{Yas}%
     \defpersianfont\Shafigh[Scale=1]{XB Shafigh}%
     \bidi@patchcmd{\@Abjad}{آ}{الف}{}{}%
-    \bidi@patchcmd{\@Abjad}{ه}{هـ}{}{}%
+    \bidi@patchcmd{\@Abjad}{ه}{ه‍}{}{}%
     \PersianAlphs%
 %%%%%    \maketitle (without the titlepage class option) internally uses \thispagestyle{plain} which locally overrides \pagestyle{empty}. Add \thispagestyle{empty} immediately after \maketitle.
     \bidi@appto\maketitle{\thispagestyle{empty}}
@@ -134,6 +156,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 %    stringstyle=\color{green}\ttfamily,      % typewriter type for strings
     showstringspaces=false,     % no special string spaces
     numbers=left,
+    numbersep=5pt,
     tabsize=2,
     frameround=tftf,
     frame=ltbr,
@@ -213,20 +236,22 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \def\uni@univlogo#1{\includegraphics[width=1.2cm]{#1}}
 \def\logo#1{\uni@univlogo{#1}}
 %
+\def\uni@ifexist#1{\ifx#1\undefined\else#1\fi}
 \newcommand{\MakeTitle}{%\phantom{leavevmode}
 \centerline{\Homa{\scriptsize  به نام خدا}}
 \centerline{\uni@univlogo{logo}}
 %\vspace{-.3cm}\centerline{\tiny دانشکده علوم‌پایه}
-\vspace{-.3cm}\centerline{\tiny دانشکده \uni@faculty}
-\vspace{-.2cm}\centerline{\tiny گروه \uni@deptartment}
-\centerline{\textbf{\tiny آزمون \uni@type}}
+\vspace{-.3cm}\centerline{\tiny دانشکده \uni@ifexist\uni@faculty}
+\vspace{-.2cm}\centerline{\tiny گروه \uni@ifexist\uni@deptartment}
+\vspace{-.1cm}\centerline{\textbf{\tiny آزمون \uni@ifexist\uni@type}}
 \vspace{-2cm}
 \noindent
-\makebox[4cm][r]{نام و نام خانوادگی:}\hfill       \makebox[4cm][l]{ سالِ تحصیلی: \uni@year}\newline
-\makebox[4cm][r]{شماره‌ٔ دانشجویی:}\hfill        \makebox[4cm][l]{ نيمسالِ \uni@semester}\newline
-\makebox[4cm][r]{\textbf{\uni@course}}    \hfill  
+\makebox[4cm][r]{نام و نام خانوادگی:}\hfill       \makebox[4cm][l]{ سالِ تحصیلی: \uni@ifexist\uni@year}\newline
+\makebox[4cm][r]{شماره‌ٔ دانشجویی:}\hfill        \makebox[4cm][l]{ نيمسالِ \uni@ifexist\uni@semester}\newline
+\makebox[4cm][r]{\textbf{\uni@ifexist\uni@course}}    \hfill  
 \makebox[4cm][l]{{\ifx\uni@date\@empty\today\else\uni@date\fi}}\newline
-\makebox[4cm][r]{\uni@major}\hfill\makebox[4cm][l]{ وقـت: {\textbf{\uni@time}} دقيقه}\newline
+\makebox[4cm][r]{\uni@ifexist\uni@major}\hfill\makebox[4cm][l]{ وقـت: \uni@ifexist\uni@time دقيقه}\newline
+\vspace{2mm}
 \hrule  height .4mm  %\vspace{ 3mm }
 \null
 }
@@ -241,15 +266,15 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \parbox[c]{6cm}{%
 \centerline{\Homa{به نام خدا‌}}
 \vspace{4mm}
-\centerline{\textbf{\uni@course}}
-\centerline{\uni@title}
+\centerline{\textbf{\uni@ifexist\uni@course}}
+\centerline{\uni@ifexist\uni@title}
 \centerline{\mbox{}}
 }
 &
 \parbox[r]{3cm}{%
-نیم‌سال \uni@semester \uni@year\\
-تحریر: \hfill\uni@date\\
-تحویل:\hfill \uni@time\\
+نیم‌سال \uni@ifexist\uni@semester \uni@ifexist\uni@year\\
+تحریر: \hfill\uni@ifexist\uni@date\\
+تحویل: \hfill \uni@ifexist\uni@time\\
 }\\
 \end{tabular*}
 \hrule  height .4mm  %\vspace{ 3mm }
@@ -429,10 +454,10 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 %
 \def\grade#1{\null\hfill{($#1$~نمره)}}
 %
-\long\def\sign{%
+\newcommand\sign[1][]{\nobreak%
 \begin{flushleft}
 \makebox[15mm][c]{\BKamraan «موفق باشيد»}\\
-\makebox[15mm][c]{\BKamraan{رضويان}}
+\ifthenelse{\equal{#1}{}}{\makebox[15mm][c]{\BKamraan{#1}}}{}%
 \end{flushleft}
 }
 %
@@ -474,11 +499,11 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \or{رسول اکرم \uni@s: بهترین مردم کسی است که مردم از او بهره‌مند شوند.}% 19
 \fi%
 }
-\centerline{\shadowbox{\leavevmode%
-\ifdim\wd\uni@notebox<\textwidth%
+\centerline{\shadowbox{%\leavevmode%
+\ifdim\wd\uni@notebox<.9\linewidth%
     \usebox\uni@notebox%
 \else
-    \parbox{\textwidth}{\centering\unhbox\uni@notebox}%
+    \parbox{.9\linewidth}{\centering\unhbox\uni@notebox}%
 \fi
 }}
 }
