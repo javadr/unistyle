@@ -1,5 +1,9 @@
 % TODO 
 % simplification of broder macro
+% 13 Jan 2018, Ver 0.84
+% some minor bug with setting Yas font in enumerate environment. 
+% some other improvement for typesetting multiple choice questions. 
+% now kalamehakim can also show latin quotes in right direction. 
 % 13 Jan 2018, Ver 0.81
 % sing font changed form BKamraan to XB Shafigh
 % 25 Dec 2017, Ver 0.8
@@ -47,8 +51,8 @@
 % 28 Dec 2016, Ver 0.1
 % Initial release
 \NeedsTeXFormat{LaTeX2e}
-\def\unistyle@date{2017/12/25}
-\def\unistyle@version{0.8}
+\def\unistyle@date{2018/01/13}
+\def\unistyle@version{0.82}
 \ProvidesClass{unistyle}[\unistyle@date\space version  \unistyle@version\space
 Exam, Coures Syllabus, and Excercise Style for Universities]
 \RequirePackage{biditools}
@@ -133,13 +137,18 @@ shape aspect=2 ]
 \RequirePackage[inline]{enumitem}
 \setlist{noitemsep,leftmargin=6mm,}% rightmargin=6mm,labelwidth=7mm,labelsep=2mm}
 %,before={\baselineskip=.65cm},after={\baselineskip=.76cm}}%,itemsep=-2mm}
+\SetEnumitemKey{twocolumn}{itemsep=1\itemsep,parsep=1\parsep,
+before=\raggedcolumns\begin{multicols}{2},after=\end{multicols}}
+\SetEnumitemKey{threecolumn}{itemsep=1\itemsep,parsep=1\parsep,
+before=\raggedcolumns\begin{multicols}{3},after=\end{multicols}}
 \SetEnumitemKey{itemtwocol}{itemsep=1\itemsep,parsep=1\parsep,
 before=\raggedcolumns\begin{multicols}{2},after=\end{multicols}}
 \SetEnumitemKey{itemtwocolLTR}{itemsep=1\itemsep,parsep=1\parsep,leftmargin=*,
 before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicols}}
-\SetEnumitemKey{arLTRlabel}{label=\Yas-\arabic*}
-\setlist[enumerate]{label=\Yas\arabic*-}
-\setlist[enumerate, 2]{label=\Yas\alph*)}
+\SetEnumitemKey{arLTRlabel}{label=-\arabic*}
+\setlist[enumerate]{label=\arabic*-}
+\setlist[enumerate, 2]{label=\alph*)}
+
 %
 \RequirePackage{tabularx}
 %
@@ -369,32 +378,33 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
     \setlength{\listparindent}{\parindent}
     }}{\end{list}}
 %
-\def\alef{\hbox to 8mm{الف\hfill)\kern2mm }}%
-\def\be{\hbox to 7mm{ب\hfill)\kern2mm }}%
-\def\jim{\hbox to 7mm{ج\hfill)\kern2mm }}%
-\def\dal{\hbox to 6mm{د\hfill)\kern2mm }}%
+\def\uni@mul@pos{\iflatin{l}{r}}
+\def\alef{\iflatin{\hbox to 5mm{a)}}{\hbox to 8mm{الف\hfill)\kern2mm }}}%
+\def\be{\iflatin{\hbox to 5mm{b)}}{\hbox to 7mm{ب\hfill)\kern2mm }}}%
+\def\jim{\iflatin{\hbox to 5mm{c)}}{\hbox to 7mm{ج\hfill)\kern2mm }}}%
+\def\dal{\iflatin{\hbox to 5mm{d)}}{\hbox to 6mm{د\hfill)\kern2mm }}}%
 %
-\newcommand{\fourj}[4]{\par\vskip1mm
-   \noindent\makebox[2.5cm][r]{\alef#1}\hfill
-            \makebox[2.5cm][r]{\be#2}\hfill
-            \makebox[2.5cm][r]{\jim#3}\hfill
-            \makebox[2.5cm][r]{\dal#4}
+\newcommand{\fourj}[4]{\nobreak\par\vskip1mm
+   \noindent\makebox[2.5cm][\uni@mul@pos]{\alef#1}\hfill
+            \makebox[2.5cm][\uni@mul@pos]{\be#2}\hfill
+            \makebox[2.5cm][\uni@mul@pos]{\jim#3}\hfill
+            \makebox[2.5cm][\uni@mul@pos]{\dal#4}\newline
    \par%\vskip3mm
 }%
 %
-\newcommand{\twoj}[4]{\par\vskip1mm
-   \noindent\makebox[4.5cm][r]{\alef#1}\hfill
-            \makebox[7.5cm][r]{\be#2}\newline
-            \makebox[4.5cm][r]{\jim#3}\hfill
-            \makebox[7.5cm][r]{\dal#4}
+\newcommand{\twoj}[4]{\nobreak\par\vskip1mm
+   \noindent\makebox[4.5cm][\uni@mul@pos]{\alef#1}\hfill
+            \makebox[7.5cm][\uni@mul@pos]{\be#2}\newline
+            \makebox[4.5cm][\uni@mul@pos]{\jim#3}\hfill
+            \makebox[7.5cm][\uni@mul@pos]{\dal#4}\newline
    \par%\vskip3mm
 }%
 %
-\newcommand{\onej}[4]{\par%\vskip5mm
-   \noindent\makebox[10cm][r]{\alef\parbox[t]{14cm}{\beginR #1}}\newline
-            \makebox[10cm][r]{\be\parbox[t]{14cm}{\beginR #2}}\newline
-            \makebox[10cm][r]{\jim\parbox[t]{14cm}{\beginR #3}}\newline
-            \makebox[10cm][r]{\dal\parbox[t]{14cm}{\beginR #4}}\newline
+\newcommand{\onej}[4]{\nobreak\par%\vskip5mm
+   \noindent\makebox[\linewidth][\uni@mul@pos]{\alef\parbox[t]{.95\linewidth}{#1}}\newline
+            \makebox[\linewidth][\uni@mul@pos]{\be\parbox[t]{.95\linewidth}{#2}}\newline
+            \makebox[\linewidth][\uni@mul@pos]{\jim\parbox[t]{.95\linewidth}{#3}}\newline
+            \makebox[\linewidth][\uni@mul@pos]{\dal\parbox[t]{.95\linewidth}{#4}}\newline
   \par%\vskip3mm
 }%
 %
@@ -470,6 +480,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \RequirePackage[first=1, last=16, counter=uni@rand]{lcg}
 \RequirePackage{xifthen}
 \newcounter{uni@hakim}
+\newif\ifuni@latinquote
 \def\uni@a{{\tiny\raisebox{ .8em }{(ع)}}}%
 \def\uni@s{{\tiny\raisebox{ .8em }{(ص)}}}%
 \newbox\uni@notebox%
@@ -499,8 +510,11 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \or{حضرت علی\uni@a: اندیشیدن همانند دیدن نیست، زیرا گاهی چشم‌ها دروغ می‌نمایاند، اما آن کس که از عقل نصیحت خواهد به او خیانت نمی‌کند. 
 {\scriptsize(حکمت۲۷۳)}}% 18 
 \or{رسول اکرم \uni@s: بهترین مردم کسی است که مردم از او بهره‌مند شوند.}% 19
+\or{\lr{Integrity has no need of rules. \footnotesize Albert Camus}\global\uni@latinquotetrue}%20
+\or{\lr{Man is the only creature that refuses to be what he is. \footnotesize Albert Camus}\global\uni@latinquotetrue}%21
 \fi%
 }
+\ifuni@latinquote\begin{latin}\fi
 \centerline{\shadowbox{%\leavevmode%
 \ifdim\wd\uni@notebox<.9\linewidth%
     \usebox\uni@notebox%
@@ -508,6 +522,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
     \parbox{.9\linewidth}{\centering\unhbox\uni@notebox}%
 \fi
 }}
+\ifuni@latinquote\end{latin}\fi
 }
 %
 \endinput
