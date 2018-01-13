@@ -1,5 +1,7 @@
 % TODO 
 % simplification of broder macro
+% 13 Jan 2018, Ver 0.81
+% sing font changed form BKamraan to XB Shafigh
 % 25 Dec 2017, Ver 0.8
 % some improvements in getting exam parameters, 
 % text main font changed to IRXLotus
@@ -45,9 +47,9 @@
 % 28 Dec 2016, Ver 0.1
 % Initial release
 \NeedsTeXFormat{LaTeX2e}
-\def\uni@date{2017/12/25}
-\def\uni@version{0.8}
-\ProvidesClass{unistyle}[\uni@date\space version  \uni@version\space
+\def\unistyle@date{2017/12/25}
+\def\unistyle@version{0.8}
+\ProvidesClass{unistyle}[\unistyle@date\space version  \unistyle@version\space
 Exam, Coures Syllabus, and Excercise Style for Universities]
 \RequirePackage{biditools}
 \RequirePackage{tikz}
@@ -108,7 +110,6 @@ shape aspect=2 ]
     \settextfont[Scale=1.2]{IRXLotus}%
     \setdigitfont{Yas}%
     \defpersianfont\Pook{XB Kayhan Sayeh}%
-    \defpersianfont\BKamraan[Scale=1]{BKamran}%
     \defpersianfont\Niloofar[Scale=1]{XB Niloofar}%
     \defpersianfont\Homa[Scale=1]{BHoma}%
     \defpersianfont\Yas[Scale=1]{Yas}%
@@ -238,7 +239,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 %
 \def\uni@ifexist#1{\ifx#1\undefined\else#1\fi}
 \newcommand{\MakeTitle}{%\phantom{leavevmode}
-\centerline{\Homa{\scriptsize  به نام خدا}}
+\centerline{\Shafigh{\scriptsize  به نام خدا}}
 \centerline{\uni@univlogo{logo}}
 %\vspace{-.3cm}\centerline{\tiny دانشکده علوم‌پایه}
 \vspace{-.3cm}\centerline{\tiny دانشکده \uni@ifexist\uni@faculty}
@@ -456,8 +457,9 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 %
 \newcommand\sign[1][]{\nobreak%
 \begin{flushleft}
-\makebox[15mm][c]{\BKamraan «موفق باشيد»}\\
-\ifthenelse{\equal{#1}{}}{\makebox[15mm][c]{\BKamraan{#1}}}{}%
+\Shafigh\scriptsize
+\makebox[15mm][c]{«موفق باشید»}\\
+\ifthenelse{\equal{#1}{}}{\makebox[15mm][c]{{#1}}}{}%
 \end{flushleft}
 }
 %
