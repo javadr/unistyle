@@ -1,5 +1,10 @@
 % TODO 
 % simplification of broder macro
+% 13 Mar 2018, Ver 0.86 
+% Improvement in \grade macro. 
+% 13 Jan 2018, Ver 0.85
+% text main font reverted to XB Niloofar
+% improvement in setting lastpage number in the bottom of every page. 
 % 13 Jan 2018, Ver 0.84
 % some minor bug with setting Yas font in enumerate environment. 
 % some other improvement for typesetting multiple choice questions. 
@@ -110,8 +115,8 @@ shape aspect=2 ]
 \@onlypreamble\unidetails
 \bidi@AtEndPreamble{%
     \RequirePackage{xepersian}%
-%    \settextfont[Scale=1]{XB Niloofar}%
-    \settextfont[Scale=1.2]{IRXLotus}%
+    \settextfont[Scale=1]{XB Niloofar}%
+%    \settextfont[Scale=1.2]{IRXLotus}%
     \setdigitfont{Yas}%
     \defpersianfont\Pook{XB Kayhan Sayeh}%
     \defpersianfont\Niloofar[Scale=1]{XB Niloofar}%
@@ -174,7 +179,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 %    xleftmargin=35pt
     }
 % 
-\def\questionbox{\framebox[1cm]{?}}%
+\def\questionbox{\framebox[9mm]{?}}%
 \def\uni@clock@get#1:#2;{\def\uni@clock@hour{#1}\def\uni@clock@min{#2}}%
 \def\uni@stripmin#1:{\edef\uni@clock@min{#1}}%
 \def\uni@hour@min#1{%
@@ -202,7 +207,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
     \draw [very thick, ] (0,0) node [rotate=90] {\pgfornament[height=10mm, ]{26}}   --
         (\textwidth,0)  node  [draw, rectangle, color=black!70, fill=white, anchor=east,
     general shadow={fill=gray,shadow xshift=-2pt, shadow yshift=-2pt}]  {\hboxR{\Shafigh #1}} ;
-\end{tikzpicture}}}
+\end{tikzpicture}}\nobreak}
 \newcommand\SyllabusMakeTitle[3]{%
 \begin{tikzpicture}
     \node (semester) at (\textwidth,0) [anchor=east, xshift=-.05\textwidth] {\hboxR{#1}};
@@ -308,7 +313,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 %\RequirePackage{fancyhdr}
 %\pagestyle{fancy}
 %\fancyhf{}
-%\cfoot{صفحهٔ \thepage{} از \pageref{LastPage}}
+%\cfoot{صفحهٔ \thepage{} از \pageref*{LastPage}}
 %\renewcommand{\headrulewidth}{0pt}
 \newcounter{lastpagenumber}%
 \AtBeginDocument{\AtBeginShipoutInit}%
@@ -318,7 +323,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \if@uni@noborder%
             \ifnum\thelastpagenumber>1% 
                 \node [fill=white, above=.5cm,centered,font=\persianfont ] at  ($(current page.south) + (0cm,0cm)$)  
-                {\hboxR{\rl{صفحهٔ} {\Yas\thepage} \rl{از} {\Yas\pageref{LastPage}}}  };
+                {\hboxR{\rl{صفحهٔ} {\Yas\thepage} \rl{از} {\Yas\thelastpagenumber}}  };
             \fi%
 \else%
     \if@uni@decorate%
@@ -342,7 +347,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
         \else%
             \draw [double distance=1pt, line width=1pt,] 
              ($(CSW.south)+(1cm,1mm)$) -- ($(CSE.south)+(-1cm,1mm)$) 
-             node [midway, color=black, fill=white,font=\persianfont] {\hboxR{صفحهٔ \thepage{} از \pageref{LastPage}}};
+             node [midway, color=black, fill=white,font=\persianfont] {\hboxR{صفحهٔ \thepage{} از \thelastpagenumber}};
          \fi%
     \else%rectangle border option
         \draw [double distance=1pt, line width=1pt, rounded corners=1mm, ] 
@@ -352,7 +357,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
                 \node [fill=white, anchor=west, xshift=1cm] at  ($(current page.south west) + (1cm,1cm)$)  {};%
             \else%
                 \node [fill=white, above=.5cm,centered,font=\persianfont ] at  ($(current page.south) + (0mm,-1mm)$)  
-                {\hboxR{\rl{صفحهٔ} {\Yas\thepage} \rl{از} {\Yas\pageref{LastPage}}}  };
+                {\hboxR{\rl{صفحهٔ} {\Yas\thepage} \rl{از} {\Yas\thelastpagenumber}}  };
             \fi%
     \fi% 
 \fi%    
@@ -462,8 +467,8 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
         \end{tabularx}
     \end{center} 
 }
-%
-\def\grade#1{\null\hfill{($#1$~نمره)}}
+%https://tex.stackexchange.com/questions/114069/flush-whats-following-hfill-to-the-next-line-if-it-doesnt-fit/114077#114077
+\def\grade#1{\hspace{\fill}\mbox{}\linebreak[0]\hspace*{\fill}\mbox{($#1$~نمره)}}
 %
 \newcommand\sign[1][]{\nobreak%
 \begin{flushleft}
@@ -477,7 +482,6 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \centerline{{\footnotesize این نوشتار تحت \lr{\LaTeX{}} بوسیله بسته \lr{\XePersian{}} آماده شده است}\reflectbox{{\footnotesize این نوشتار تحت \lr{\LaTeX{}} بوسیله بسته \lr{\XePersian{}} آماده شده است.}}}
 }
 %
-\RequirePackage[first=1, last=16, counter=uni@rand]{lcg}
 \RequirePackage{xifthen}
 \newcounter{uni@hakim}
 \newif\ifuni@latinquote
@@ -485,6 +489,30 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \def\uni@s{{\tiny\raisebox{ .8em }{(ص)}}}%
 \newbox\uni@notebox%
 %\newdimen\uni@notedim%
+\newread\uni@reader%
+\newcount\uni@wisewordscount%
+\openin\uni@reader=wisewords.def\relax%
+\gdef\uni@empty@line{\par }
+\def\uni@wisewords{}
+%\def\uni@wisewords@makelist{%\csname ifcase\endcsname#1{}%
+    \loop%
+        \read\uni@reader to \uni@reader@line%
+        \unless\ifeof\uni@reader%
+            \ifx\uni@reader@line\uni@empty@line\else
+                \global\advance\uni@wisewordscount by 1\relax
+                %\csname or\endcsname
+                \typeout{\uni@reader@line}%
+%                \edef\uni@wisewords{\uni@wisewords\or\uni@reader@line}
+            \fi
+        \repeat%
+    \closein\uni@reader%
+%    \def\uni@wisewords{\ifcase\uni\uni@wisewords\fi}
+%    \csname fi\endcsname
+%    \typeout{TTTTTTTTTTTTTTTTTTTTTTT \the\uni@wisewordscount}
+%}
+
+%\RequirePackage[first=1, last=\the\uni@wisewordscount, counter=uni@rand]{lcg}
+\RequirePackage[first=1, last=21, counter=uni@rand]{lcg}
 \newcommand\kalamehakim[1][]{%
 \ifthenelse{\equal{#1}{}}%
 {\rand\setcounter{uni@hakim}{\arabic{uni@rand}}}{\setcounter{uni@hakim}{#1}}%
@@ -505,7 +533,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \or{سقراط: بکوش تا آنچه را که علاج ندارد، با مدارا تحمل کنی.}% 13
 \or{حضرت علی\uni@a: آنان که وقتشان پایان یافته خواستار مهلتند، و آنان که مهلت دارند کوتاهی می‌ورزند.}% 14
 \or{حضرت علی\uni@a: فرصت‌ها چون ابر می‌گذرد.}% 15
-\or{بقراط: فرومایگی شخص از دو چیز مشخص می‌شود: $1$- بیهوده سخن گفتن $2$- نپرسیده جواب دادن}% 16
+\or{بقراط: فرومایگی شخص از دو چیز مشخص می‌شود: بیهوده سخن گفتن، نپرسیده جواب دادن}% 16
 \or{حضرت علی\uni@a: ما اکثر العبر و اقل الاعتبار (عبرت‌ها چه‌ بسيار است‌ و پند گرفتن‌‌ها چقدر کم!)}% 17
 \or{حضرت علی\uni@a: اندیشیدن همانند دیدن نیست، زیرا گاهی چشم‌ها دروغ می‌نمایاند، اما آن کس که از عقل نصیحت خواهد به او خیانت نمی‌کند. 
 {\scriptsize(حکمت۲۷۳)}}% 18 
@@ -516,7 +544,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 }
 \ifuni@latinquote\begin{latin}\fi
 \centerline{\shadowbox{%\leavevmode%
-\ifdim\wd\uni@notebox<.9\linewidth%
+\ifdim\wd\uni@notebox<.95\linewidth%
     \usebox\uni@notebox%
 \else
     \parbox{.9\linewidth}{\centering\unhbox\uni@notebox}%
