@@ -1,5 +1,7 @@
 % TODO 
 % simplification of broder macro
+% 20 May 2018, Ver 0.87
+% Improvement in \bdots macro. 
 % 13 Mar 2018, Ver 0.86 
 % Improvement in \grade macro. 
 % 13 Jan 2018, Ver 0.85
@@ -415,7 +417,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 %
 %
 \def\DOTS{\hbox to 4cm {\dotfill}}%
-\def\bdots{\leavevmode\hbox to 14mm {\dotfill}}
+\def\bdots{\leavevmode\hbox to 14mm {\dotfill}\hbox to 2pt{}}
 %
 \newcounter{uni@t@lct}%
 \newcounter{uni@t@row}%
