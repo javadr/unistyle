@@ -1,5 +1,7 @@
 % TODO 
 % simplification of broder macro
+% 19 June 2018, Ver 0.88
+% \xepersianproof macro get the fontsize as an optional input, its default is \footnotesize on a4paper and \scriptsize in a5peper.
 % 20 May 2018, Ver 0.87
 % Improvement in \bdots macro. 
 % 13 Mar 2018, Ver 0.86 
@@ -73,7 +75,8 @@ Exam, Coures Syllabus, and Excercise Style for Universities]
 \newif\if@uni@noborder
 \newif\if@uni@key
 \newif\if@uni@grid
-\DeclareOption{a5paper}{\PassOptionsToPackage{a5paper}{geometry}}
+\newif\if@uni@afivepaper
+\DeclareOption{a5paper}{\PassOptionsToPackage{a5paper}{geometry}\@uni@afivepapertrue}
 \DeclareOption{a4paper}{\PassOptionsToPackage{a4paper}{geometry}}
 \DeclareOption{decorate}{\@uni@decoratetrue}
 \DeclareOption{rectangle}{\@uni@decoratefalse}
@@ -480,8 +483,8 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \end{flushleft}
 }
 %
-\long\def\xepersianproof{\color{black}
-\centerline{{\footnotesize این نوشتار تحت \lr{\LaTeX{}} بوسیله بسته \lr{\XePersian{}} آماده شده است}\reflectbox{{\footnotesize این نوشتار تحت \lr{\LaTeX{}} بوسیله بسته \lr{\XePersian{}} آماده شده است.}}}
+\newcommand{\xepersianproof}[1][\if@uni@afivepaper\scriptsize\else\footnotesize\fi]{\color{black}
+\centerline{{#1 این نوشتار تحت \lr{\LaTeX{}} بوسیله بسته \lr{\XePersian{}} آماده شده است}\reflectbox{{#1 این نوشتار تحت \lr{\LaTeX{}} بوسیله بسته \lr{\XePersian{}} آماده شده است.}}}
 }
 %
 \RequirePackage{xifthen}
@@ -514,7 +517,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 %}
 
 %\RequirePackage[first=1, last=\the\uni@wisewordscount, counter=uni@rand]{lcg}
-\RequirePackage[first=1, last=21, counter=uni@rand]{lcg}
+\RequirePackage[first=1, last=21, seed=0, counter=uni@rand]{lcg}
 \newcommand\kalamehakim[1][]{%
 \ifthenelse{\equal{#1}{}}%
 {\rand\setcounter{uni@hakim}{\arabic{uni@rand}}}{\setcounter{uni@hakim}{#1}}%
