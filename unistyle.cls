@@ -1,5 +1,7 @@
 % TODO 
 % simplification of broder macro
+% 11 Nov 2018, Ver 0.881
+% minor typo
 % 19 June 2018, Ver 0.88
 % \xepersianproof macro get the fontsize as an optional input, its default is \footnotesize on a4paper and \scriptsize in a5peper.
 % 20 May 2018, Ver 0.87
@@ -60,8 +62,8 @@
 % 28 Dec 2016, Ver 0.1
 % Initial release
 \NeedsTeXFormat{LaTeX2e}
-\def\unistyle@date{2018/01/13}
-\def\unistyle@version{0.82}
+\def\unistyle@date{2018/11/11}
+\def\unistyle@version{0.881}
 \ProvidesClass{unistyle}[\unistyle@date\space version  \unistyle@version\space
 Exam, Coures Syllabus, and Excercise Style for Universities]
 \RequirePackage{biditools}
@@ -157,8 +159,8 @@ before=\raggedcolumns\begin{multicols}{2},after=\end{multicols}}
 before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicols}}
 \SetEnumitemKey{arLTRlabel}{label=-\arabic*}
 \setlist[enumerate]{label=\arabic*-}
+%\setlist[enumerate, 2]{label={\if@RTL\alph*)\else(\alph*\fi}}
 \setlist[enumerate, 2]{label=\alph*)}
-
 %
 \RequirePackage{tabularx}
 %
@@ -541,7 +543,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \or{بقراط: فرومایگی شخص از دو چیز مشخص می‌شود: بیهوده سخن گفتن، نپرسیده جواب دادن}% 16
 \or{حضرت علی\uni@a: ما اکثر العبر و اقل الاعتبار (عبرت‌ها چه‌ بسيار است‌ و پند گرفتن‌‌ها چقدر کم!)}% 17
 \or{حضرت علی\uni@a: اندیشیدن همانند دیدن نیست، زیرا گاهی چشم‌ها دروغ می‌نمایاند، اما آن کس که از عقل نصیحت خواهد به او خیانت نمی‌کند. 
-{\scriptsize(حکمت۲۷۳)}}% 18 
+{\scriptsize(حکمت۲۸۱)}}% 18 
 \or{رسول اکرم \uni@s: بهترین مردم کسی است که مردم از او بهره‌مند شوند.}% 19
 \or{\lr{Integrity has no need of rules. \footnotesize Albert Camus}\global\uni@latinquotetrue}%20
 \or{\lr{Man is the only creature that refuses to be what he is. \footnotesize Albert Camus}\global\uni@latinquotetrue}%21
