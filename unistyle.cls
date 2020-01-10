@@ -1,5 +1,7 @@
 % TODO 
 % simplification of broder macro
+% 10 Jan 2020, Ver 0.9
+% some improvements in \MakeTitlePro and \unidetails
 % 11 Nov 2018, Ver 0.881
 % minor typo
 % 19 June 2018, Ver 0.88
@@ -114,12 +116,13 @@ shape aspect=2 ]
 \define@key{unistyle}{ترم}{\def\uni@semester{\ifcase#1{}\or{اول}\or{دوم}\or{تابستان}\fi}}
 \define@key{unistyle}{سال تحصیلی}{\def\uni@year{#1}}
 \define@key{unistyle}{مدت امتحان}{\def\uni@time{#1}}
+\define@key{unistyle}{تاریخ تحویل}{\def\uni@time{#1}} %   تاریخ تحویل پروژه 
 \define@key{unistyle}{نوع آزمون}{\def\uni@type{#1}}
 \define@key{unistyle}{دانشکده}{\def\uni@faculty{#1}}
 \define@key{unistyle}{گروه}{\def\uni@deptartment{#1}}
 \define@key{unistyle}{لوگوی دانشگاه}{\uni@univlogo{#1}}
 \newcommand{\unidetails}{\setkeys{unistyle}}
-\@onlypreamble\unidetails
+%\@onlypreamble\unidetails
 \bidi@AtEndPreamble{%
     \RequirePackage{xepersian}%
     \settextfont[Scale=1]{XB Niloofar}%
@@ -233,13 +236,13 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \def\uni@faculty{علوم‌پایه}
 \def\uni@deptartment{علوم‌کامپیوتر}
 %
-\@onlypreamble{\etitle}
+%\@onlypreamble{\etitle}
 \@onlypreamble{\ecourse}
 \@onlypreamble{\emajor}
 \@onlypreamble{\edate}
 \@onlypreamble{\esemester}
 \@onlypreamble{\eyear}
-\@onlypreamble{\etime}
+%\@onlypreamble{\etime}
 \@onlypreamble{\etype}
 \@onlypreamble{\logo}
 \@onlypreamble{\efaculty}
@@ -272,17 +275,17 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \makebox[4cm][r]{شماره‌ٔ دانشجویی:}\hfill        \makebox[4cm][l]{ نيمسالِ \uni@ifexist\uni@semester}\newline
 \makebox[4cm][r]{\textbf{\uni@ifexist\uni@course}}    \hfill  
 \makebox[4cm][l]{{\ifx\uni@date\@empty\today\else\uni@date\fi}}\newline
-\makebox[4cm][r]{\uni@ifexist\uni@major}\hfill\makebox[4cm][l]{ وقـت: \uni@ifexist\uni@time دقيقه}\newline
-\vspace{2mm}
+\makebox[4cm][r]{\uni@ifexist\uni@major}\hfill\makebox[4cm][l]{ وقـت: \uni@ifexist\uni@time{} دقيقه}\newline
+%\vspace{1mm}
 \hrule  height .4mm  %\vspace{ 3mm }
 \null
 }
 \newcommand{\MakeTitlePro}{\small
 \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}ccc}
 \parbox[c]{2.5cm}{%
-\vspace{ -.2cm}\centerline{\uni@univlogo{logo}}
-\vspace{-.2cm}\centerline{دانشکده علوم‌ پایه}
-\vspace{-.2cm}\centerline{گروه علوم کامپیوتر}
+\vspace{ -.3cm}\centerline{\uni@univlogo{logo}}
+\vspace{-.3cm}\centerline{\tiny دانشکده \uni@ifexist\uni@faculty}
+\vspace{-.2cm}\centerline{\tiny گروه \uni@ifexist\uni@deptartment}
 }
 &
 \parbox[c]{6cm}{%
@@ -294,14 +297,16 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 }
 &
 \parbox[r]{3cm}{%
-نیم‌سال \uni@ifexist\uni@semester \uni@ifexist\uni@year\\
+\vspace{2mm}
+نیم‌سال {}\uni@ifexist\uni@semester{} \uni@ifexist\uni@year\\
 تحریر: \hfill\uni@ifexist\uni@date\\
 تحویل: \hfill \uni@ifexist\uni@time\\
 }\\
 \end{tabular*}
 \hrule  height .4mm  %\vspace{ 3mm }
 \null
-}
+}%
+%
 \newcommand{\newQomExamTitle}[7]{% for compatibility with old documents
 \centerline{\Homa{\scriptsize  به نام خدا‌}}
 \centerline{\includegraphics[width=1.2cm]{logo}}
