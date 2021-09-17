@@ -1,36 +1,42 @@
-% TODO 
+% TODO
 % simplification of broder macro
+% 18 Sep 2021, Ver 0.92
+% new quote for \kalamehakim
+% 31 Mar 2020, Ver 0.91
+% \uniformdeviate as random generator for \kalamehakim insteasd of lcg package
+% 10 Jan 2020, Ver 0.9
+% some improvements in \MakeTitlePro and \unidetails
 % 11 Nov 2018, Ver 0.881
 % minor typo
 % 19 June 2018, Ver 0.88
 % \xepersianproof macro get the fontsize as an optional input, its default is \footnotesize on a4paper and \scriptsize in a5peper.
 % 20 May 2018, Ver 0.87
-% Improvement in \bdots macro. 
-% 13 Mar 2018, Ver 0.86 
-% Improvement in \grade macro. 
+% Improvement in \bdots macro.
+% 13 Mar 2018, Ver 0.86
+% Improvement in \grade macro.
 % 13 Jan 2018, Ver 0.85
 % text main font reverted to XB Niloofar
-% improvement in setting lastpage number in the bottom of every page. 
+% improvement in setting lastpage number in the bottom of every page.
 % 13 Jan 2018, Ver 0.84
-% some minor bug with setting Yas font in enumerate environment. 
-% some other improvement for typesetting multiple choice questions. 
-% now kalamehakim can also show latin quotes in right direction. 
+% some minor bug with setting Yas font in enumerate environment.
+% some other improvement for typesetting multiple choice questions.
+% now kalamehakim can also show latin quotes in right direction.
 % 13 Jan 2018, Ver 0.81
 % sing font changed form BKamraan to XB Shafigh
 % 25 Dec 2017, Ver 0.8
-% some improvements in getting exam parameters, 
+% some improvements in getting exam parameters,
 % text main font changed to IRXLotus
-% \sign macro has an optional argument which can get the name of instructor. 
+% \sign macro has an optional argument which can get the name of instructor.
 % 5 Sep 2017, Ver 0.74
 % another improvement in kalamehakim macro, so it can typset text with width more that \textwidth in shadowbox.
 % 5 Jun 2017, Ver 0.72
 % kalamehakim macro improved
 % 30 Apr 2017, Ver 0.7
-% grid option and a grid in the background for better justificaion of objects by user. 
+% grid option and a grid in the background for better justificaion of objects by user.
 % 30 Apr 2017, Ver 0.62
-% \ndots macro puts bdots in a horizontal box of 14mm length, it's useful for fill in the blank question. 
+% \ndots macro puts bdots in a horizontal box of 14mm length, it's useful for fill in the blank question.
 % 11 Feb 2017, Ver 0.61
-% another sentence for kalamehakim macro. 
+% another sentence for kalamehakim macro.
 % 31 Jan 2017, Ver 0.6
 % default faculty and deptartment added and corresponding macros for defining them as desired
 % macros for title setting are moved to preamble
@@ -47,7 +53,7 @@
 % 15 Jan 2017, Ver 0.52
 % a minor bug.http://tex.stackexchange.com/questions/348778
 % 14 Jan 2017, Ver 0.51
-% key option make a key word in the background. 
+% key option make a key word in the background.
 % 10 Jan 2017, Ver 0.5
 % flowchart supporting by defining an option for class and relatex style for tikz boxes including io, decision, process, startstop, arrow with the help of https://www.sharelatex.com/blog/2013/08/29/tikz-series-pt3.html
 % noborder option cause having no border on the pages
@@ -83,6 +89,28 @@ Exam, Coures Syllabus, and Excercise Style for Universities]
 \DeclareOption{decorate}{\@uni@decoratetrue}
 \DeclareOption{rectangle}{\@uni@decoratefalse}
 \DeclareOption{noborder}{\@uni@nobordertrue}
+\DeclareOption{automata}{%https://www3.nd.edu/~kogge/courses/cse30151-fa17/Public/other/tikz_tutorial.pdf
+\usetikzlibrary{automata, positioning, arrows}
+\tikzset{%
+    ->, % makes the edges directed
+    >=stealth', % makes the arrow heads bold
+    node distance=3cm, % specifies the minimum distance between two nodes. Change if necessary.
+    every state/.style={thick, fill=gray!10}, % sets the properties for each ’state’ node
+    initial text=$ $, % sets the text that appears on the start arrow
+    }
+%\node[<options>] (name) {text label};
+%options: • state  • initial  • accepting
+%\begin{tikzpicture}
+%    \node[state, initial, accepting] (1) {$1$};
+%    \node[state, below left of=1] (2) {$2$};
+%    \node[state, right of=2] (3) {$3$};
+%    \draw (1) edge[above] node{$b$} (2)
+%    (1) edge[below, bend right, left=0.3] node{$\epsilon$} (3)
+%    (2) edge[loop left] node{$a$} (2)
+%    (2) edge[below] node{$a, b$} (3)
+%    (3) edge[above, bend right, right=0.3] node{$a$} (1);
+%\end{tikzpicture}
+}
 \DeclareOption{flowchart}{%
 \usetikzlibrary{shapes.geometric, shapes.symbols,arrows}
 \tikzstyle{startstop} = [rectangle, rounded corners=15pt, minimum width=2cm, minimum height=1cm,text centered, draw=black, ]
@@ -105,7 +133,7 @@ shape aspect=2 ]
 \ExecuteOptions{a4paper}
 \ExecuteOptions{decorate}
 \ProcessOptions
-\LoadClass[a4paper, 10pt]{article}   
+\LoadClass[a4paper, 10pt]{article}
 \RequirePackage{keyval}
 \define@key{unistyle}{عنوان}{\def\uni@title{#1}}
 \define@key{unistyle}{عنوان درس}{\def\uni@course{#1}}
@@ -114,12 +142,13 @@ shape aspect=2 ]
 \define@key{unistyle}{ترم}{\def\uni@semester{\ifcase#1{}\or{اول}\or{دوم}\or{تابستان}\fi}}
 \define@key{unistyle}{سال تحصیلی}{\def\uni@year{#1}}
 \define@key{unistyle}{مدت امتحان}{\def\uni@time{#1}}
+\define@key{unistyle}{تاریخ تحویل}{\def\uni@time{#1}} %   تاریخ تحویل پروژه
 \define@key{unistyle}{نوع آزمون}{\def\uni@type{#1}}
 \define@key{unistyle}{دانشکده}{\def\uni@faculty{#1}}
 \define@key{unistyle}{گروه}{\def\uni@deptartment{#1}}
 \define@key{unistyle}{لوگوی دانشگاه}{\uni@univlogo{#1}}
 \newcommand{\unidetails}{\setkeys{unistyle}}
-\@onlypreamble\unidetails
+%\@onlypreamble\unidetails
 \bidi@AtEndPreamble{%
     \RequirePackage{xepersian}%
     \settextfont[Scale=1]{XB Niloofar}%
@@ -185,7 +214,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 %    backgroundcolor=\color{green},
 %    xleftmargin=35pt
     }
-% 
+%
 \def\questionbox{\framebox[9mm]{?}}%
 \def\uni@clock@get#1:#2;{\def\uni@clock@hour{#1}\def\uni@clock@min{#2}}%
 \def\uni@stripmin#1:{\edef\uni@clock@min{#1}}%
@@ -205,11 +234,11 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \newcommand{\tbox}[1]{\centerline{%
 \begin{tikzpicture}[font=\normalsize\persianfont]
 %    \node (left) {\pgfornament[width=12mm]{11}};
-%    \node (text) [right=of left] {\hboxR{#1}};    
+%    \node (text) [right=of left] {\hboxR{#1}};
 %    \node (right) [right=of text] {\pgfornament[width=12mm]{14}};
-%%    \draw [very thick, ] (0,0) node (uni@sa)  {\pgfornament[width=12mm]{14}} --  
+%%    \draw [very thick, ] (0,0) node (uni@sa)  {\pgfornament[width=12mm]{14}} --
 %%        (\textwidth,0)  node  (uni@sb) {\pgfornament[width=12mm]{11}};
-%%    \node at  ($(uni@sa)!0.5!(uni@sb)$) [draw, rectangle, color=black, fill=white, 
+%%    \node at  ($(uni@sa)!0.5!(uni@sb)$) [draw, rectangle, color=black, fill=white,
 %%    general shadow={fill=black,shadow xshift=-2pt, shadow yshift=-2pt}]  {\hboxR{\Shafigh #1}} ;
     \draw [very thick, ] (0,0) node [rotate=90] {\pgfornament[height=10mm, ]{26}}   --
         (\textwidth,0)  node  [draw, rectangle, color=black!70, fill=white, anchor=east,
@@ -233,13 +262,13 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \def\uni@faculty{علوم‌پایه}
 \def\uni@deptartment{علوم‌کامپیوتر}
 %
-\@onlypreamble{\etitle}
+%\@onlypreamble{\etitle}
 \@onlypreamble{\ecourse}
 \@onlypreamble{\emajor}
 \@onlypreamble{\edate}
 \@onlypreamble{\esemester}
 \@onlypreamble{\eyear}
-\@onlypreamble{\etime}
+%\@onlypreamble{\etime}
 \@onlypreamble{\etype}
 \@onlypreamble{\logo}
 \@onlypreamble{\efaculty}
@@ -270,19 +299,19 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \noindent
 \makebox[4cm][r]{نام و نام خانوادگی:}\hfill       \makebox[4cm][l]{ سالِ تحصیلی: \uni@ifexist\uni@year}\newline
 \makebox[4cm][r]{شماره‌ٔ دانشجویی:}\hfill        \makebox[4cm][l]{ نيمسالِ \uni@ifexist\uni@semester}\newline
-\makebox[4cm][r]{\textbf{\uni@ifexist\uni@course}}    \hfill  
+\makebox[4cm][r]{\textbf{\uni@ifexist\uni@course}}    \hfill
 \makebox[4cm][l]{{\ifx\uni@date\@empty\today\else\uni@date\fi}}\newline
-\makebox[4cm][r]{\uni@ifexist\uni@major}\hfill\makebox[4cm][l]{ وقـت: \uni@ifexist\uni@time دقيقه}\newline
-\vspace{2mm}
+\makebox[4cm][r]{\uni@ifexist\uni@major}\hfill\makebox[4cm][l]{ وقـت: \uni@ifexist\uni@time{} دقيقه}\newline
+%\vspace{1mm}
 \hrule  height .4mm  %\vspace{ 3mm }
 \null
 }
 \newcommand{\MakeTitlePro}{\small
 \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}ccc}
 \parbox[c]{2.5cm}{%
-\vspace{ -.2cm}\centerline{\uni@univlogo{logo}}
-\vspace{-.2cm}\centerline{دانشکده علوم‌ پایه}
-\vspace{-.2cm}\centerline{گروه علوم کامپیوتر}
+\vspace{ -.3cm}\centerline{\uni@univlogo{logo}}
+\vspace{-.3cm}\centerline{\tiny دانشکده \uni@ifexist\uni@faculty}
+\vspace{-.2cm}\centerline{\tiny گروه \uni@ifexist\uni@deptartment}
 }
 &
 \parbox[c]{6cm}{%
@@ -294,14 +323,16 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 }
 &
 \parbox[r]{3cm}{%
-نیم‌سال \uni@ifexist\uni@semester \uni@ifexist\uni@year\\
+\vspace{2mm}
+نیم‌سال {}\uni@ifexist\uni@semester{} \uni@ifexist\uni@year\\
 تحریر: \hfill\uni@ifexist\uni@date\\
 تحویل: \hfill \uni@ifexist\uni@time\\
 }\\
 \end{tabular*}
 \hrule  height .4mm  %\vspace{ 3mm }
 \null
-}
+}%
+%
 \newcommand{\newQomExamTitle}[7]{% for compatibility with old documents
 \centerline{\Homa{\scriptsize  به نام خدا‌}}
 \centerline{\includegraphics[width=1.2cm]{logo}}
@@ -328,8 +359,8 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \setcounter{lastpagenumber}{\getrefbykeydefault{LastPage}{page}{1}}%
 \begin{tikzpicture}[color=black,remember picture, overlay, every node/.style={inner sep=0pt},]
 \if@uni@noborder%
-            \ifnum\thelastpagenumber>1% 
-                \node [fill=white, above=.5cm,centered,font=\persianfont ] at  ($(current page.south) + (0cm,0cm)$)  
+            \ifnum\thelastpagenumber>1%
+                \node [fill=white, above=.5cm,centered,font=\persianfont ] at  ($(current page.south) + (0cm,0cm)$)
                 {\hboxR{\rl{صفحهٔ} {\Yas\thepage} \rl{از} {\Yas\thelastpagenumber}}  };
             \fi%
 \else%
@@ -342,42 +373,42 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
         {\pgfornament[width=2cm,symmetry=h]{41}};
         \node[anchor=south east] (CSE) at ($(current page.south east) + (-2mm,2mm)$)
         {\pgfornament[width=2cm,symmetry=c]{41}};
-        \draw [double distance=1pt, line width=1pt,] 
+        \draw [double distance=1pt, line width=1pt,]
             ([yshift=.45pt]$(CNW.north)+(1cm,-1mm)$) to ($(CNE.north)+(-1cm,-1mm)$);
-        \draw [double distance=1pt, line width=1pt,] 
+        \draw [double distance=1pt, line width=1pt,]
             ($(CNW.south west)+(3.5pt,0cm)$) to ($(CSW.north west)+(3.5pt,0cm)$);
-        \draw [double distance=1pt, line width=1pt,] 
+        \draw [double distance=1pt, line width=1pt,]
             ($(CNE.south east)-(3.5pt,0cm)$) to ($(CSE.north east)-(3.5pt,0cm)$);
         \ifnum\thelastpagenumber=1%
-            \draw [double distance=1pt, line width=1pt,] 
+            \draw [double distance=1pt, line width=1pt,]
              ([yshift=-.45pt]$(CSW.south)+(1cm,1mm)$) -- ($(CSE.south)+(-1cm,1mm)$){};
         \else%
-            \draw [double distance=1pt, line width=1pt,] 
-             ($(CSW.south)+(1cm,1mm)$) -- ($(CSE.south)+(-1cm,1mm)$) 
+            \draw [double distance=1pt, line width=1pt,]
+             ($(CSW.south)+(1cm,1mm)$) -- ($(CSE.south)+(-1cm,1mm)$)
              node [midway, color=black, fill=white,font=\persianfont] {\hboxR{صفحهٔ \thepage{} از \thelastpagenumber}};
          \fi%
     \else%rectangle border option
-        \draw [double distance=1pt, line width=1pt, rounded corners=1mm, ] 
+        \draw [double distance=1pt, line width=1pt, rounded corners=1mm, ]
                             ($(current page.north west) + (4mm,-4mm)$) rectangle
-                            ($(current page.south east)  + (-4mm,4mm)$) node (rect) {}; 
-            \ifnum\thelastpagenumber=1% 
+                            ($(current page.south east)  + (-4mm,4mm)$) node (rect) {};
+            \ifnum\thelastpagenumber=1%
                 \node [fill=white, anchor=west, xshift=1cm] at  ($(current page.south west) + (1cm,1cm)$)  {};%
             \else%
-                \node [fill=white, above=.5cm,centered,font=\persianfont ] at  ($(current page.south) + (0mm,-1mm)$)  
+                \node [fill=white, above=.5cm,centered,font=\persianfont ] at  ($(current page.south) + (0mm,-1mm)$)
                 {\hboxR{\rl{صفحهٔ} {\Yas\thepage} \rl{از} {\Yas\thelastpagenumber}}  };
             \fi%
-    \fi% 
-\fi%    
+    \fi%
+\fi%
 \if@uni@key%
     \node [color=gray, scale=\textwidth/1.1cm, rotate=45,font=\persianfont\normalsize, opacity=.3] at ($(current page.center)$) {پاسخنامه};
 \fi%
-\if@uni@grid% draw a grid in the background of the paper. 
+\if@uni@grid% draw a grid in the background of the paper.
     \foreach \y in {0.0, 0.01, ..., 1.0}%
     {\draw[draw=gray,draw opacity=0.7] ($(current page.south west)+(\y\paperwidth,0pt)$) %
          -- ($(current page.south west)+(\y\paperwidth,\paperheight)$);}%
     \foreach \y in {0.0, 0.01, ..., 1.0}%
     {\draw[draw=gray,draw opacity=0.7] ($(current page.south west)+(0pt,\y\paperheight)$) %
-         -- ($(current page.south west)+(\paperwidth,\y\paperheight)$);}%    
+         -- ($(current page.south west)+(\paperwidth,\y\paperheight)$);}%
 \fi%
     \end{tikzpicture}%
 }}
@@ -396,7 +427,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \def\jim{\iflatin{\hbox to 5mm{c)}}{\hbox to 7mm{ج\hfill)\kern2mm }}}%
 \def\dal{\iflatin{\hbox to 5mm{d)}}{\hbox to 6mm{د\hfill)\kern2mm }}}%
 %
-\newcommand{\fourj}[4]{\nobreak\par\vskip1mm
+\newcommand{\fourj}[4]{\nopagebreak\nobreak\par\vskip1mm
    \noindent\makebox[2.5cm][\uni@mul@pos]{\alef#1}\hfill
             \makebox[2.5cm][\uni@mul@pos]{\be#2}\hfill
             \makebox[2.5cm][\uni@mul@pos]{\jim#3}\hfill
@@ -404,7 +435,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
    \par%\vskip3mm
 }%
 %
-\newcommand{\twoj}[4]{\nobreak\par\vskip1mm
+\newcommand{\twoj}[4]{\nopagebreak\nobreak\par\vskip1mm
    \noindent\makebox[4.5cm][\uni@mul@pos]{\alef#1}\hfill
             \makebox[7.5cm][\uni@mul@pos]{\be#2}\newline
             \makebox[4.5cm][\uni@mul@pos]{\jim#3}\hfill
@@ -412,7 +443,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
    \par%\vskip3mm
 }%
 %
-\newcommand{\onej}[4]{\nobreak\par%\vskip5mm
+\newcommand{\onej}[4]{\nopagebreak\nobreak\par%\vskip5mm
    \noindent\makebox[\linewidth][\uni@mul@pos]{\alef\parbox[t]{.95\linewidth}{#1}}\newline
             \makebox[\linewidth][\uni@mul@pos]{\be\parbox[t]{.95\linewidth}{#2}}\newline
             \makebox[\linewidth][\uni@mul@pos]{\jim\parbox[t]{.95\linewidth}{#3}}\newline
@@ -460,19 +491,19 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
                \pgfmathparse{int(\value{uni@t@row}*2)}$\pgfmathresult$ \uni@t@and{5}
                \pgfmathparse{int(\value{uni@t@row}*3)}$\pgfmathresult$ \uni@t@and{5}
                \pgfmathparse{int(\value{uni@t@row}*4)}$\pgfmathresult$ \uni@t@and{4}
-               \\\hline 
-               \or \pgfmathparse{int(\value{uni@t@row})}$\pgfmathresult$  \uni@t@and{4} 
+               \\\hline
+               \or \pgfmathparse{int(\value{uni@t@row})}$\pgfmathresult$  \uni@t@and{4}
                \\\cline{1-5}%
-               \or \pgfmathparse{int(\value{uni@t@row})}$\pgfmathresult$ \uni@t@and{5} 
-               \pgfmathparse{int(\value{uni@t@row}*2)}$\pgfmathresult$  \uni@t@and{4} 
+               \or \pgfmathparse{int(\value{uni@t@row})}$\pgfmathresult$ \uni@t@and{5}
+               \pgfmathparse{int(\value{uni@t@row}*2)}$\pgfmathresult$  \uni@t@and{4}
                \\\cline{1-10}%
                \or \pgfmathparse{int(\value{uni@t@row}*1)}$\pgfmathresult$ \uni@t@and{5}
                \pgfmathparse{int(\value{uni@t@row}*2)}$\pgfmathresult$ \uni@t@and{5}
-               \pgfmathparse{int(\value{uni@t@row}*3)}$\pgfmathresult$ \uni@t@and{4} 
+               \pgfmathparse{int(\value{uni@t@row}*3)}$\pgfmathresult$ \uni@t@and{4}
                \\\cline{1-15}%
            \fi%
         \end{tabularx}
-    \end{center} 
+    \end{center}
 }
 %https://tex.stackexchange.com/questions/114069/flush-whats-following-hfill-to-the-next-line-if-it-doesnt-fit/114077#114077
 \def\grade#1{\hspace{\fill}\mbox{}\linebreak[0]\hspace*{\fill}\mbox{($#1$~نمره)}}
@@ -519,10 +550,10 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 %}
 
 %\RequirePackage[first=1, last=\the\uni@wisewordscount, counter=uni@rand]{lcg}
-\RequirePackage[first=1, last=21, seed=0, counter=uni@rand]{lcg}
 \newcommand\kalamehakim[1][]{%
 \ifthenelse{\equal{#1}{}}%
-{\rand\setcounter{uni@hakim}{\arabic{uni@rand}}}{\setcounter{uni@hakim}{#1}}%
+{\setcounter{uni@hakim}{\numexpr\uniformdeviate21 +1\relax}}%
+{\setcounter{uni@hakim}{#1}}%
 \savebox\uni@notebox{%
 \ifcase\theuni@hakim{}%
 \or{حضرت علی\uni@a:  هر چيزى نيازمند عقل است و عقل نياز به ادب دارد.}% 1
@@ -542,11 +573,12 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \or{حضرت علی\uni@a: فرصت‌ها چون ابر می‌گذرد.}% 15
 \or{بقراط: فرومایگی شخص از دو چیز مشخص می‌شود: بیهوده سخن گفتن، نپرسیده جواب دادن}% 16
 \or{حضرت علی\uni@a: ما اکثر العبر و اقل الاعتبار (عبرت‌ها چه‌ بسيار است‌ و پند گرفتن‌‌ها چقدر کم!)}% 17
-\or{حضرت علی\uni@a: اندیشیدن همانند دیدن نیست، زیرا گاهی چشم‌ها دروغ می‌نمایاند، اما آن کس که از عقل نصیحت خواهد به او خیانت نمی‌کند. 
-{\scriptsize(حکمت۲۸۱)}}% 18 
+\or{حضرت علی\uni@a: اندیشیدن همانند دیدن نیست، زیرا گاهی چشم‌ها دروغ می‌نمایاند، اما آن کس که از عقل نصیحت خواهد به او خیانت نمی‌کند.
+{\scriptsize(حکمت۲۸۱)}}% 18
 \or{رسول اکرم \uni@s: بهترین مردم کسی است که مردم از او بهره‌مند شوند.}% 19
 \or{\lr{Integrity has no need of rules. \footnotesize Albert Camus}\global\uni@latinquotetrue}%20
 \or{\lr{Man is the only creature that refuses to be what he is. \footnotesize Albert Camus}\global\uni@latinquotetrue}%21
+\or{\lr{He who asks a question is a fool for five minutes; he who does not ask a question remains a fool forever.\footnotesize Chinese Proverb}\global\uni@latinquotetrue}%22
 \fi%
 }
 \ifuni@latinquote\begin{latin}\fi
