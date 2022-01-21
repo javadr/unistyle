@@ -149,10 +149,11 @@ shape aspect=2 ]
 \define@key{unistyle}{لوگوی دانشگاه}{\uni@univlogo{#1}}
 \newcommand{\unidetails}{\setkeys{unistyle}}
 %\@onlypreamble\unidetails
+% https://github.com/persiantex/xepersian/issues/17 
+\ExplSyntaxOn \cs_set_eq:NN \etex_iffontchar:D \tex_iffontchar:D \cs_undefine:N \c_one \int_const:Nn \c_one { 1 } \ExplSyntaxOff%
 \bidi@AtEndPreamble{%
     \RequirePackage{xepersian}%
     \settextfont[Scale=1]{XB Niloofar}%
-%    \settextfont[Scale=1.2]{IRXLotus}%
     \setdigitfont{Yas}%
     \defpersianfont\Pook{XB Kayhan Sayeh}%
     \defpersianfont\Niloofar[Scale=1]{XB Niloofar}%
