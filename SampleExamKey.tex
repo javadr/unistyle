@@ -1,0 +1,92 @@
+\documentclass[a4paper,12pt,flowchart,key]{unistyle}
+
+\unidetails{
+عنوان درس=مبانی کامپیوتر و برنامه‌سازی,
+مقطع و رشته=ک‍‍ارش‍ن‍‍اس‍‍ى‌ ‌ع‍ل‍وم‌‌ک‍‍ام‍پ‍ی‍وت‍ر,
+روز و تاریخ=دوشنبه \LR{1398/11/01},
+ترم=1,
+سال تحصیلی=98--99,
+مدت امتحان=180,
+نوع آزمون=پایان‌ترم,
+لوگوی دانشگاه=logo,
+}
+
+\begin{document}
+\MakeTitle
+
+\begin{enumerate}
+    \item \null
+    \begin{multicols}{2}
+    کامپیوتری را تصوّر نمایید که در آن تنها جمع با عدد یک و کسر یک واحد تعریف شده باشد؛ بعبارت دقیق‌تر در این ماشین تنها اعمال
+    $x+1$  و $x-1$  تعریف شده‌اند و عبارت $x+y$  زمانیکه هر دو شناسه عددی غیر از یک باشد منجر به خطا خواهد شد.
+    می‌خواهیم در این ماشین دو تابع بازگشتی برای اعمال جمع و تفریق دو عدد صحیح بنویسیم. \grade{2}
+    \vfill
+\begin{lstlisting}
+def add(m,n):
+	if m<0 and n>=0: m,n=n,m
+	if m==0: return n
+	if n==0: return m
+	return add(m-1,n+1)
+\end{lstlisting}
+    \end{multicols}
+    شرط اول اگر نباشد تابع برای حالتی که عدد اول منفی و دومی مثبت باشد در حلقه بی‌پایان خواهد افتاد. ضمناً تابع تفریق
+    هم به طریقی مشابه نوشته می‌شود؛ چگونه؟
+
+   \item
+       فلوچارتی را رسم کنید که با گرفتن یک عدد صحیح از ورودی مشخص نماید که آن عدد، عددی اول است یا خیر؟ \grade{2}
+
+\begin{center}
+\scalebox{.9}{
+\begin{tikzpicture}[node distance=2cm,scale=.5]
+    \node (start) [startstop] {شروع};
+    \node (in) [io, right of=start, xshift=1cm] {n};
+    \node (pro1) [process, right of=in, xshift=1cm] {$i\leftarrow 2$};
+    \node (dec1) [decision, right of=pro1, xshift=1cm] {$i<n$};
+    \node (dec2) [decision, right of=dec1, xshift=2cm] {$n\%i=0$};
+    \node (pro2) [process, below of=dec2, yshift=-.1cm, xshift=-2cm] {$i\leftarrow i+1$};
+    \node (out1) [io, right of=dec2, xshift=2cm] {\rl{ عدد مرکب}};
+    \node (out2) [io, above of=dec2, ] {\rl{ عدد اول}};
+    \node (end) [startstop, above of=out1, ] {پایان};
+
+    \draw [arrow] (start) -- (in);
+    \draw [arrow] (in) -- (pro1);
+    \draw [arrow] (pro1) -- (dec1);
+    \draw [arrow] (dec1) -- node [anchor=south] {بله} (dec2);
+    \draw [arrow] (dec2) |- node [anchor=west, near start] {خیر} (pro2);
+    \draw [arrow] (pro2) -| (dec1);
+    \draw [arrow] (dec2) -- node [anchor=south] {بله} (out1);
+    \draw [arrow] (out1) -- (end);
+    \draw [arrow] (out2) -- (end);
+    \draw [arrow] (dec1) |- node [anchor=east, near start] {خیر} (out2);
+\end{tikzpicture}
+}
+\end{center}
+  
+   \item
+   \begin{enumerate}
+       \item خطاهای نگارشی برنامه زیر را تصحیح نمایید --در همین برگه مشخص گردد--. \grade{2}
+       \item مشخص نمایید که خروجی این برنامه چه چیزی خواهد بود.  ---  $x^k$  --- \grade{1}
+   \end{enumerate}
+
+    \begin{latin}
+    \begin{lstlisting}
+    x = Input("Please enter a number: ") # int(input...
+    k = input '(Please enter another number: )'   #int ... ('')
+    y = x
+    a = 1
+    i = K # k
+    While i > 0 # while i>0:
+        if  i % 2 == 1:
+            a = a * y
+        y = y * y
+        i = i//2
+    print "the output is {}".format(a) # print ()
+    \end{lstlisting}
+    \end{latin}
+
+\end{enumerate}
+\sign
+\null\vfill
+
+\null\vfill\kalamehakim[1]\xepersianproof
+\end{document}
