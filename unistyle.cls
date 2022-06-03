@@ -1,76 +1,7 @@
-% TODO
-% simplification of broder macro
-% 18 Sep 2021, Ver 0.92
-% new quote for \kalamehakim
-% 31 Mar 2020, Ver 0.91
-% \uniformdeviate as random generator for \kalamehakim insteasd of lcg package
-% 10 Jan 2020, Ver 0.9
-% some improvements in \MakeTitlePro and \unidetails
-% 11 Nov 2018, Ver 0.881
-% minor typo
-% 19 June 2018, Ver 0.88
-% \xepersianproof macro get the fontsize as an optional input, its default is \footnotesize on a4paper and \scriptsize in a5peper.
-% 20 May 2018, Ver 0.87
-% Improvement in \bdots macro.
-% 13 Mar 2018, Ver 0.86
-% Improvement in \grade macro.
-% 13 Jan 2018, Ver 0.85
-% text main font reverted to XB Niloofar
-% improvement in setting lastpage number in the bottom of every page.
-% 13 Jan 2018, Ver 0.84
-% some minor bug with setting Yas font in enumerate environment.
-% some other improvement for typesetting multiple choice questions.
-% now kalamehakim can also show latin quotes in right direction.
-% 13 Jan 2018, Ver 0.81
-% sing font changed form BKamraan to XB Shafigh
-% 25 Dec 2017, Ver 0.8
-% some improvements in getting exam parameters,
-% text main font changed to IRXLotus
-% \sign macro has an optional argument which can get the name of instructor.
-% 5 Sep 2017, Ver 0.74
-% another improvement in kalamehakim macro, so it can typset text with width more that \textwidth in shadowbox.
-% 5 Jun 2017, Ver 0.72
-% kalamehakim macro improved
-% 30 Apr 2017, Ver 0.7
-% grid option and a grid in the background for better justificaion of objects by user.
-% 30 Apr 2017, Ver 0.62
-% \ndots macro puts bdots in a horizontal box of 14mm length, it's useful for fill in the blank question.
-% 11 Feb 2017, Ver 0.61
-% another sentence for kalamehakim macro.
-% 31 Jan 2017, Ver 0.6
-% default faculty and deptartment added and corresponding macros for defining them as desired
-% macros for title setting are moved to preamble
-% default day is set \today in case of not using edate macro
-% 21 Jan 2017, Ver 0.56
-% a macro for better representing of clock
-% 20 Jan 2017, Ver 0.55
-% SyllabusMakeTitle macro make a title for course syllabus
-% class name changed to unistyle
-% 20 Jan 2017, Ver 0.54
-% \parindent=0pt
-% 17 Jan 2017, Ver 0.53
-% a minor bug.http://tex.stackexchange.com/questions/348949
-% 15 Jan 2017, Ver 0.52
-% a minor bug.http://tex.stackexchange.com/questions/348778
-% 14 Jan 2017, Ver 0.51
-% key option make a key word in the background.
-% 10 Jan 2017, Ver 0.5
-% flowchart supporting by defining an option for class and relatex style for tikz boxes including io, decision, process, startstop, arrow with the help of https://www.sharelatex.com/blog/2013/08/29/tikz-series-pt3.html
-% noborder option cause having no border on the pages
-% 7 Jan 2017, Ver 0.4
-% support for projet title with MakeTitlePro
-% 2 Jan 2017, Ver 0.31
-% defining 2nd level for enumerate environment.
-% 31 Dec 2016, Ver 0.3
-% kalamehakim macro can put a phrase randomly by use of lct package.
-% 30 Dec 2016, Ver 0.2
-% support a macro for prining respose form for multiple choices.
-% 28 Dec 2016, Ver 0.1
-% Initial release
 \NeedsTeXFormat{LaTeX2e}
-\def\unistyle@date{2018/11/11}
-\def\unistyle@version{0.881}
-\ProvidesClass{unistyle}[\unistyle@date\space version  \unistyle@version\space
+\def\unistyle@date{03/06/2022}
+\def\unistyle@version{0.93}
+\ProvidesClass{unistyle}[\unistyle@date\space version \unistyle@version\space
 Exam, Coures Syllabus, and Excercise Style for Universities]
 \RequirePackage{biditools}
 \RequirePackage{tikz}
@@ -146,11 +77,11 @@ shape aspect=2 ]
 \define@key{unistyle}{نوع آزمون}{\def\uni@type{#1}}
 \define@key{unistyle}{دانشکده}{\def\uni@faculty{#1}}
 \define@key{unistyle}{گروه}{\def\uni@deptartment{#1}}
-\define@key{unistyle}{لوگوی دانشگاه}{\uni@univlogo{#1}}
+\define@key{unistyle}{لوگوی دانشگاه}{\def\uni@logo{#1}}
 \newcommand{\unidetails}{\setkeys{unistyle}}
 %\@onlypreamble\unidetails
-% https://github.com/persiantex/xepersian/issues/17 
-\ExplSyntaxOn \cs_set_eq:NN \etex_iffontchar:D \tex_iffontchar:D \cs_undefine:N \c_one \int_const:Nn \c_one { 1 } \ExplSyntaxOff%
+% https://github.com/persiantex/xepersian/issues/17
+% \ExplSyntaxOn \cs_set_eq:NN \etex_iffontchar:D \tex_iffontchar:D \cs_undefine:N \c_one \int_const:Nn \c_one { 1 } \ExplSyntaxOff%
 \bidi@AtEndPreamble{%
     \RequirePackage{xepersian}%
     \settextfont[Scale=1]{XB Niloofar}%
@@ -164,7 +95,9 @@ shape aspect=2 ]
     \bidi@patchcmd{\@Abjad}{ه}{ه‍}{}{}%
     \PersianAlphs%
 %%%%%    \maketitle (without the titlepage class option) internally uses \thispagestyle{plain} which locally overrides \pagestyle{empty}. Add \thispagestyle{empty} immediately after \maketitle.
-    \bidi@appto\maketitle{\thispagestyle{empty}}
+    \bidi@appto\maketitle{\thispagestyle{empty}}%
+    \ifdefined\uni@logo\else\def\uni@logo{logo}\fi
+    \savebox\uni@logobox(1.2cm,1.2cm){\includegraphics[width=1.2cm, height=1.2cm]{\uni@logo}}
 }
 \parindent=0pt%
 %\bidi@AfterEndPreamble{\null\setRTL\null}
@@ -248,8 +181,8 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \newcommand\SyllabusMakeTitle[3]{%
 \begin{tikzpicture}
     \node (semester) at (\textwidth,0) [anchor=east, xshift=-.05\textwidth] {\hboxR{#1}};
-    \node (course) at (semester.south east) [anchor=east] {\hboxR{{\Homa\large  #2‬ }  $#3‬‬$  }};
-    \node at  (0, 0) {\includegraphics[width=.1\textwidth]{logo}};
+    \node (course) at (semester.south east) [anchor=east] {\hboxR{{\Homa\large #2} $#3$}};
+    \node at (0,0) {\resizebox{.1\textwidth}{!}{\logo}};
 \end{tikzpicture}}
 %\long\def\tbox#1{\noindent\par\fbox{\Shafigh{#1}}\par}
 \let\uni@course\@empty
@@ -271,7 +204,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \@onlypreamble{\eyear}
 %\@onlypreamble{\etime}
 \@onlypreamble{\etype}
-\@onlypreamble{\logo}
+% \@onlypreamble{\logo}
 \@onlypreamble{\efaculty}
 \@onlypreamble{\edepartment}
 %
@@ -285,13 +218,13 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \def\etype#1{\def\uni@type{#1}}
 \def\efaculty#1{\def\uni@faculty{#1}}
 \def\edepartment#1{\def\uni@deptartment{#1}}
-\def\uni@univlogo#1{\includegraphics[width=1.2cm]{#1}}
-\def\logo#1{\uni@univlogo{#1}}
+\newsavebox\uni@logobox%
+\def\logo{\usebox{\uni@logobox}}%
 %
 \def\uni@ifexist#1{\ifx#1\undefined\else#1\fi}
 \newcommand{\MakeTitle}{%\phantom{leavevmode}
-\centerline{\Shafigh{\scriptsize  به نام خدا}}
-\centerline{\uni@univlogo{logo}}
+\centerline{{\Shafigh\scriptsize به نام خدا}}
+\centerline{\logo}
 %\vspace{-.3cm}\centerline{\tiny دانشکده علوم‌پایه}
 \vspace{-.3cm}\centerline{\tiny دانشکده \uni@ifexist\uni@faculty}
 \vspace{-.2cm}\centerline{\tiny گروه \uni@ifexist\uni@deptartment}
@@ -310,7 +243,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \newcommand{\MakeTitlePro}{\small
 \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}ccc}
 \parbox[c]{2.5cm}{%
-\vspace{ -.3cm}\centerline{\uni@univlogo{logo}}
+\vspace{-.3cm}\centerline{\logo}
 \vspace{-.3cm}\centerline{\tiny دانشکده \uni@ifexist\uni@faculty}
 \vspace{-.2cm}\centerline{\tiny گروه \uni@ifexist\uni@deptartment}
 }
@@ -336,7 +269,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 %
 \newcommand{\newQomExamTitle}[7]{% for compatibility with old documents
 \centerline{\Homa{\scriptsize  به نام خدا‌}}
-\centerline{\includegraphics[width=1.2cm]{logo}}
+\centerline{\logo}
 \vspace{-.3cm}\centerline{\tiny دانشکده علوم‌}
 \vspace{-.2cm}\centerline{\tiny گروه علوم کامپیوتر}
 \centerline{\textbf{\tiny آزمون #7   }}
@@ -475,9 +408,9 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
     \pgfmathparse{int(3-\theuni@t@col))}%
     \ifnum\theuni@t@col=0{\setcounter{uni@t@r}{0}}\else\setcounter{uni@t@r}{\pgfmathresult}\fi%
     \begin{center}\Yas
-        \begin{tabularx}{.97\textwidth}{||*{4}{Y|Y|Y|Y|Y||}}
+        \begin{tabularx}{.97\textwidth}{||*{4}{@{\hskip 2pt}Y@{\hskip 2pt}|Y|Y|Y|Y||}}
         \hline
-    سوال & الفـ & ب & ج & د &  سوال & الفـ & ب & ج & د &  سوال & الفـ & ب & ج & د & سوال & الفـ & ب & ج & د  \\
+    {\scriptsize سوال} & الفـ & ب & ج & د &  {\scriptsize سوال} & الفـ & ب & ج & د &  {\scriptsize سوال} & الفـ & ب & ج & د & {\scriptsize سوال} & الفـ & ب & ج & د  \\
            \hline\hline
            \forloop{uni@t@lct}{1}{\value{uni@t@lct} < \numexpr\value{uni@t@row}+0\relax}%10}
            {\arabic{uni@t@lct} \uni@t@and{5}  %
