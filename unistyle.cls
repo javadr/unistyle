@@ -1,6 +1,6 @@
 \NeedsTeXFormat{LaTeX2e}
-\def\unistyle@date{03/06/2022}
-\def\unistyle@version{0.93}
+\def\unistyle@date{21/06/2022}
+\def\unistyle@version{0.94}
 \ProvidesClass{unistyle}[\unistyle@date\space version \unistyle@version\space
 Exam, Coures Syllabus, and Excercise Style for Universities]
 \RequirePackage{biditools}
@@ -384,8 +384,63 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
             \makebox[\linewidth][\uni@mul@pos]{\dal\parbox[t]{.95\linewidth}{#4}}\newline
   \par%\vskip3mm
 }%
-%
-%
+% multiple choices environment inspired by the below and improved by Vafa Khalighi
+% https://tex.stackexchange.com/questions/140923/how-to-automatically-align-the-four-choices-of-a-multiple-choice-question-in-exa
+% MultipltChoices Environment.
+\newcounter{uni@MultChoiceCount}
+\newcommand{\uni@InitialChoice}{%
+    \ifnum\value{uni@MultChoiceCount}>\z@
+        \cr
+    \fi
+    \stepcounter{uni@MultChoiceCount}%
+    (\harfi{uni@MultChoiceCount})
+}
+\newcommand{\uni@FinalChoice}{%
+    \ifnum\value{uni@MultChoiceCount}>\z@
+        \hfill
+        \egroup
+    \fi
+    \stepcounter{uni@MultChoiceCount}%
+    \hspace{0pt}%
+    \hbox to \uni@MultChoicesWidth\bgroup
+    (\harfi{uni@MultChoiceCount})
+}
+\newbox\uni@MultChoicesBox
+\newdimen\uni@MultChoicesWidth
+\newcommand{\uni@ComputeMultChoicesWidth}[1]{%
+    \setbox\uni@MultChoicesBox\hbox{%
+        \vbox{%
+        \halign{%
+            ##\hfil\cr
+            #1\crcr
+        }%
+        }%
+    }%
+}
+\newenvironment{multiplechoices}{%
+    \setcounter{uni@MultChoiceCount}{0}%
+    \let\Choice\uni@InitialChoice
+    \bidi@collect@long@body\uni@ComputeMultChoicesWidth
+}{%
+    \uni@MultChoicesWidth-\fontcharwd\font`
+    \advance\uni@MultChoicesWidth\wd\uni@MultChoicesBox
+    \ifdim\uni@MultChoicesWidth>0.5\textwidth
+        \uni@MultChoicesWidth=\textwidth
+    \else
+        \ifdim\uni@MultChoicesWidth>0.25\textwidth
+        \uni@MultChoicesWidth=0.5\textwidth
+        \else
+        \uni@MultChoicesWidth=0.25\textwidth
+        \fi
+    \fi
+    \setcounter{uni@MultChoiceCount}{0}%
+    \let\Choice\uni@FinalChoice
+    \parindent\z@
+    \the\@bidi@envbody
+    \hfill
+    \egroup
+}
+% End of multiplechoices
 \def\DOTS{\hbox to 4cm {\dotfill}}%
 \def\bdots{\leavevmode\hbox to 14mm {\dotfill}\hbox to 2pt{}}
 %
@@ -411,31 +466,31 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
         \begin{tabularx}{.97\textwidth}{||*{4}{@{\hskip 2pt}Y@{\hskip 2pt}|Y|Y|Y|Y||}}
         \hline
     {\scriptsize سوال} & الفـ & ب & ج & د &  {\scriptsize سوال} & الفـ & ب & ج & د &  {\scriptsize سوال} & الفـ & ب & ج & د & {\scriptsize سوال} & الفـ & ب & ج & د  \\
-           \hline\hline
-           \forloop{uni@t@lct}{1}{\value{uni@t@lct} < \numexpr\value{uni@t@row}+0\relax}%10}
-           {\arabic{uni@t@lct} \uni@t@and{5}  %
-           \addtocounter{uni@t@lct}{\value{uni@t@row}}\arabic{uni@t@lct} \uni@t@and{5}  %
-           \addtocounter{uni@t@lct}{\ifnum\theuni@t@r=2\numexpr\value{uni@t@row}-1\relax\else\value{uni@t@row}\fi}\arabic{uni@t@lct} \uni@t@and{5}  %
-           \addtocounter{uni@t@lct}{\ifnum\theuni@t@r>0\numexpr\value{uni@t@row}-1\relax\else\value{uni@t@row}\fi}\arabic{uni@t@lct} \uni@t@and{4}  \\\hline
-           \pgfmathparse{int(\value{uni@t@row}*-3+\value{uni@t@r})}%
-           \addtocounter{uni@t@lct}{\pgfmathresult}%
-           }%
-           \ifcase\value{uni@t@col}
-               \pgfmathparse{int(\value{uni@t@row})}$\pgfmathresult$ \uni@t@and{5}
-               \pgfmathparse{int(\value{uni@t@row}*2)}$\pgfmathresult$ \uni@t@and{5}
-               \pgfmathparse{int(\value{uni@t@row}*3)}$\pgfmathresult$ \uni@t@and{5}
-               \pgfmathparse{int(\value{uni@t@row}*4)}$\pgfmathresult$ \uni@t@and{4}
-               \\\hline
-               \or \pgfmathparse{int(\value{uni@t@row})}$\pgfmathresult$  \uni@t@and{4}
-               \\\cline{1-5}%
-               \or \pgfmathparse{int(\value{uni@t@row})}$\pgfmathresult$ \uni@t@and{5}
-               \pgfmathparse{int(\value{uni@t@row}*2)}$\pgfmathresult$  \uni@t@and{4}
-               \\\cline{1-10}%
-               \or \pgfmathparse{int(\value{uni@t@row}*1)}$\pgfmathresult$ \uni@t@and{5}
-               \pgfmathparse{int(\value{uni@t@row}*2)}$\pgfmathresult$ \uni@t@and{5}
-               \pgfmathparse{int(\value{uni@t@row}*3)}$\pgfmathresult$ \uni@t@and{4}
-               \\\cline{1-15}%
-           \fi%
+        \hline\hline
+        \forloop{uni@t@lct}{1}{\value{uni@t@lct} < \numexpr\value{uni@t@row}+0\relax}%10}
+        {\arabic{uni@t@lct} \uni@t@and{5}  %
+        \addtocounter{uni@t@lct}{\value{uni@t@row}}\arabic{uni@t@lct} \uni@t@and{5}  %
+        \addtocounter{uni@t@lct}{\ifnum\theuni@t@r=2\numexpr\value{uni@t@row}-1\relax\else\value{uni@t@row}\fi}\arabic{uni@t@lct} \uni@t@and{5}  %
+        \addtocounter{uni@t@lct}{\ifnum\theuni@t@r>0\numexpr\value{uni@t@row}-1\relax\else\value{uni@t@row}\fi}\arabic{uni@t@lct} \uni@t@and{4}  \\\hline
+        \pgfmathparse{int(\value{uni@t@row}*-3+\value{uni@t@r})}%
+        \addtocounter{uni@t@lct}{\pgfmathresult}%
+        }%
+        \ifcase\value{uni@t@col}
+            \pgfmathparse{int(\value{uni@t@row})}$\pgfmathresult$ \uni@t@and{5}
+            \pgfmathparse{int(\value{uni@t@row}*2)}$\pgfmathresult$ \uni@t@and{5}
+            \pgfmathparse{int(\value{uni@t@row}*3)}$\pgfmathresult$ \uni@t@and{5}
+            \pgfmathparse{int(\value{uni@t@row}*4)}$\pgfmathresult$ \uni@t@and{4}
+            \\\hline
+            \or \pgfmathparse{int(\value{uni@t@row})}$\pgfmathresult$  \uni@t@and{4}
+            \\\cline{1-5}%
+            \or \pgfmathparse{int(\value{uni@t@row})}$\pgfmathresult$ \uni@t@and{5}
+            \pgfmathparse{int(\value{uni@t@row}*2)}$\pgfmathresult$  \uni@t@and{4}
+            \\\cline{1-10}%
+            \or \pgfmathparse{int(\value{uni@t@row}*1)}$\pgfmathresult$ \uni@t@and{5}
+            \pgfmathparse{int(\value{uni@t@row}*2)}$\pgfmathresult$ \uni@t@and{5}
+            \pgfmathparse{int(\value{uni@t@row}*3)}$\pgfmathresult$ \uni@t@and{4}
+            \\\cline{1-15}%
+        \fi%
         \end{tabularx}
     \end{center}
 }
@@ -512,7 +567,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \or{رسول اکرم \uni@s: بهترین مردم کسی است که مردم از او بهره‌مند شوند.}% 19
 \or{\lr{Integrity has no need of rules. \footnotesize Albert Camus}\global\uni@latinquotetrue}%20
 \or{\lr{Man is the only creature that refuses to be what he is. \footnotesize Albert Camus}\global\uni@latinquotetrue}%21
-\or{\lr{He who asks a question is a fool for five minutes; he who does not ask a question remains a fool forever.\footnotesize Chinese Proverb}\global\uni@latinquotetrue}%22
+\or{\lr{He who asks a question is a fool for five minutes; he who does not ask a question remains a fool forever.\footnotesize{ }Chinese Proverb}\global\uni@latinquotetrue}%22
 \fi%
 }
 \ifuni@latinquote\begin{latin}\fi

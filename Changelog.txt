@@ -1,3 +1,5 @@
+% 21 June 2022, Ver 0.94
+% New environment, `multiplechoices`, for multiple choices question which automatically adjust the choices.
 % 3 June 2022, Ver 0.93
 % The university logo has been saved in a box to be reused later.
 % 2 June 2022, Ver 0.92
