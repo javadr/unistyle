@@ -1,3 +1,8 @@
+% 22 June 2022, Ver 0.95
+% Some improvements to multiplechoices environment made by Vafa:
+% 1) uses \linewidth instead \textwidth to work correctly in enumerate environment
+% 2) defining \ChoiceLabelWidth and \ChoiceLabelSep
+% 3) ignoring overfull \hbox warning in case of a long long choice and typesets it in several lines if needed
 % 21 June 2022, Ver 0.94
 % New environment, `multiplechoices`, for multiple choices question which automatically adjust the choices.
 % 3 June 2022, Ver 0.93

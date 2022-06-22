@@ -1,6 +1,6 @@
 \NeedsTeXFormat{LaTeX2e}
-\def\unistyle@date{21/06/2022}
-\def\unistyle@version{0.94}
+\def\unistyle@date{22/06/2022}
+\def\unistyle@version{0.95}
 \ProvidesClass{unistyle}[\unistyle@date\space version \unistyle@version\space
 Exam, Coures Syllabus, and Excercise Style for Universities]
 \RequirePackage{biditools}
@@ -153,11 +153,11 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \def\uni@clock@get#1:#2;{\def\uni@clock@hour{#1}\def\uni@clock@min{#2}}%
 \def\uni@stripmin#1:{\edef\uni@clock@min{#1}}%
 \def\uni@hour@min#1{%
-  \uni@clock@get#1:\relax;%
-  \edef\uni@tmpa{\uni@clock@min}%
-  \edef\uni@relax{\relax}%
-  \ifx\uni@tmpa\uni@relax\edef\uni@clock@min{00}%
-  \else\expandafter\uni@stripmin\uni@clock@min\fi%
+    \uni@clock@get#1:\relax;%
+    \edef\uni@tmpa{\uni@clock@min}%
+    \edef\uni@relax{\relax}%
+    \ifx\uni@tmpa\uni@relax\edef\uni@clock@min{00}%
+    \else\expandafter\uni@stripmin\uni@clock@min\fi%
 }%
 \def\clock[#1]{%
 \expandafter\uni@hour@min\expandafter{#1}%
@@ -339,10 +339,10 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \if@uni@grid% draw a grid in the background of the paper.
     \foreach \y in {0.0, 0.01, ..., 1.0}%
     {\draw[draw=gray,draw opacity=0.7] ($(current page.south west)+(\y\paperwidth,0pt)$) %
-         -- ($(current page.south west)+(\y\paperwidth,\paperheight)$);}%
+        -- ($(current page.south west)+(\y\paperwidth,\paperheight)$);}%
     \foreach \y in {0.0, 0.01, ..., 1.0}%
     {\draw[draw=gray,draw opacity=0.7] ($(current page.south west)+(0pt,\y\paperheight)$) %
-         -- ($(current page.south west)+(\paperwidth,\y\paperheight)$);}%
+        -- ($(current page.south west)+(\paperwidth,\y\paperheight)$);}%
 \fi%
     \end{tikzpicture}%
 }}
@@ -387,23 +387,33 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 % multiple choices environment inspired by the below and improved by Vafa Khalighi
 % https://tex.stackexchange.com/questions/140923/how-to-automatically-align-the-four-choices-of-a-multiple-choice-question-in-exa
 % MultipltChoices Environment.
+\newdimen\uni@ChoiceLabelWidth
+\newdimen\uni@ChoiceLabelSep
+\uni@ChoiceLabelWidth=1.5em
+\uni@ChoiceLabelSep=0.5em
 \newcounter{uni@MultChoiceCount}
 \newcommand{\uni@InitialChoice}{%
     \ifnum\value{uni@MultChoiceCount}>\z@
         \cr
     \fi
     \stepcounter{uni@MultChoiceCount}%
-    (\harfi{uni@MultChoiceCount})
+    \hbox to \uni@ChoiceLabelWidth{\hss(\alph{uni@MultChoiceCount})}%
+    \kern\uni@ChoiceLabelSep
 }
 \newcommand{\uni@FinalChoice}{%
     \ifnum\value{uni@MultChoiceCount}>\z@
-        \hfill
+        \egroup
         \egroup
     \fi
     \stepcounter{uni@MultChoiceCount}%
-    \hspace{0pt}%
-    \hbox to \uni@MultChoicesWidth\bgroup
-    (\harfi{uni@MultChoiceCount})
+    \hspace{0pt plus 1pt}%
+    \hbox\bgroup
+    \hbox to \uni@ChoiceLabelWidth{\hss(\alph{uni@MultChoiceCount})}%
+    \kern\uni@ChoiceLabelSep
+        \vtop\bgroup
+        \hsize\uni@MultChoicesWidth
+        \advance\hsize-\uni@ChoiceLabelWidth
+        \advance\hsize-\uni@ChoiceLabelSep
 }
 \newbox\uni@MultChoicesBox
 \newdimen\uni@MultChoicesWidth
@@ -419,25 +429,29 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 }
 \newenvironment{multiplechoices}{%
     \setcounter{uni@MultChoiceCount}{0}%
-    \let\Choice\uni@InitialChoice
+    \let\choice\uni@InitialChoice
     \bidi@collect@long@body\uni@ComputeMultChoicesWidth
 }{%
     \uni@MultChoicesWidth-\fontcharwd\font`
     \advance\uni@MultChoicesWidth\wd\uni@MultChoicesBox
-    \ifdim\uni@MultChoicesWidth>0.5\textwidth
-        \uni@MultChoicesWidth=\textwidth
+    \ifdim\uni@MultChoicesWidth>0.5\linewidth
+        \uni@MultChoicesWidth=\linewidth
     \else
-        \ifdim\uni@MultChoicesWidth>0.25\textwidth
-        \uni@MultChoicesWidth=0.5\textwidth
+        \ifdim\uni@MultChoicesWidth>0.25\linewidth
+        \uni@MultChoicesWidth=0.5\linewidth
         \else
-        \uni@MultChoicesWidth=0.25\textwidth
+        \uni@MultChoicesWidth=0.25\linewidth
         \fi
     \fi
     \setcounter{uni@MultChoiceCount}{0}%
-    \let\Choice\uni@FinalChoice
+    \let\choice\uni@FinalChoice
     \parindent\z@
+    \ifvmode
+    \else
+        \par
+    \fi
     \the\@bidi@envbody
-    \hfill
+    \egroup
     \egroup
 }
 % End of multiplechoices
