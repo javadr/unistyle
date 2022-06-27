@@ -1,6 +1,6 @@
 \NeedsTeXFormat{LaTeX2e}
-\def\unistyle@date{22/06/2022}
-\def\unistyle@version{0.95}
+\def\unistyle@date{27/06/2022}
+\def\unistyle@version{0.96}
 \ProvidesClass{unistyle}[\unistyle@date\space version \unistyle@version\space
 Exam, Coures Syllabus, and Excercise Style for Universities]
 \RequirePackage{biditools}
@@ -91,7 +91,7 @@ shape aspect=2 ]
     \defpersianfont\Homa[Scale=1]{BHoma}%
     \defpersianfont\Yas[Scale=1]{Yas}%
     \defpersianfont\Shafigh[Scale=1]{XB Shafigh}%
-    \bidi@patchcmd{\@Abjad}{آ}{الف}{}{}%
+    \bidi@patchcmd{\@Abjad}{آ}{الفـ}{}{}%
     \bidi@patchcmd{\@Abjad}{ه}{ه‍}{}{}%
     \PersianAlphs%
 %%%%%    \maketitle (without the titlepage class option) internally uses \thispagestyle{plain} which locally overrides \pagestyle{empty}. Add \thispagestyle{empty} immediately after \maketitle.
@@ -109,6 +109,7 @@ shape aspect=2 ]
 \graphicspath{{images/}}
 \RequirePackage{forloop}
 \RequirePackage{multicol}
+\RequirePackage{multiple-choice}
 \RequirePackage[inline]{enumitem}
 \setlist{noitemsep,leftmargin=6mm,}% rightmargin=6mm,labelwidth=7mm,labelsep=2mm}
 %,before={\baselineskip=.65cm},after={\baselineskip=.76cm}}%,itemsep=-2mm}
@@ -315,12 +316,12 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
             ($(CNE.south east)-(3.5pt,0cm)$) to ($(CSE.north east)-(3.5pt,0cm)$);
         \ifnum\thelastpagenumber=1%
             \draw [double distance=1pt, line width=1pt,]
-             ([yshift=-.45pt]$(CSW.south)+(1cm,1mm)$) -- ($(CSE.south)+(-1cm,1mm)$){};
+                ([yshift=-.45pt]$(CSW.south)+(1cm,1mm)$) -- ($(CSE.south)+(-1cm,1mm)$){};
         \else%
             \draw [double distance=1pt, line width=1pt,]
-             ($(CSW.south)+(1cm,1mm)$) -- ($(CSE.south)+(-1cm,1mm)$)
-             node [midway, color=black, fill=white,font=\persianfont] {\hboxR{صفحهٔ \thepage{} از \thelastpagenumber}};
-         \fi%
+                ($(CSW.south)+(1cm,1mm)$) -- ($(CSE.south)+(-1cm,1mm)$)
+                node [midway, color=black, fill=white,font=\persianfont] {\hboxR{صفحهٔ \thepage{} از \thelastpagenumber}};
+        \fi%
     \else%rectangle border option
         \draw [double distance=1pt, line width=1pt, rounded corners=1mm, ]
                             ($(current page.north west) + (4mm,-4mm)$) rectangle
@@ -362,99 +363,29 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \def\dal{\iflatin{\hbox to 5mm{d)}}{\hbox to 6mm{د\hfill)\kern2mm }}}%
 %
 \newcommand{\fourj}[4]{\nopagebreak\nobreak\par\vskip1mm
-   \noindent\makebox[2.5cm][\uni@mul@pos]{\alef#1}\hfill
+    \noindent\makebox[2.5cm][\uni@mul@pos]{\alef#1}\hfill
             \makebox[2.5cm][\uni@mul@pos]{\be#2}\hfill
             \makebox[2.5cm][\uni@mul@pos]{\jim#3}\hfill
             \makebox[2.5cm][\uni@mul@pos]{\dal#4}\newline
-   \par%\vskip3mm
+    \par%\vskip3mm
 }%
 %
 \newcommand{\twoj}[4]{\nopagebreak\nobreak\par\vskip1mm
-   \noindent\makebox[4.5cm][\uni@mul@pos]{\alef#1}\hfill
+    \noindent\makebox[4.5cm][\uni@mul@pos]{\alef#1}\hfill
             \makebox[7.5cm][\uni@mul@pos]{\be#2}\newline
             \makebox[4.5cm][\uni@mul@pos]{\jim#3}\hfill
             \makebox[7.5cm][\uni@mul@pos]{\dal#4}\newline
-   \par%\vskip3mm
+    \par%\vskip3mm
 }%
 %
 \newcommand{\onej}[4]{\nopagebreak\nobreak\par%\vskip5mm
-   \noindent\makebox[\linewidth][\uni@mul@pos]{\alef\parbox[t]{.95\linewidth}{#1}}\newline
+    \noindent\makebox[\linewidth][\uni@mul@pos]{\alef\parbox[t]{.95\linewidth}{#1}}\newline
             \makebox[\linewidth][\uni@mul@pos]{\be\parbox[t]{.95\linewidth}{#2}}\newline
             \makebox[\linewidth][\uni@mul@pos]{\jim\parbox[t]{.95\linewidth}{#3}}\newline
             \makebox[\linewidth][\uni@mul@pos]{\dal\parbox[t]{.95\linewidth}{#4}}\newline
-  \par%\vskip3mm
+    \par%\vskip3mm
 }%
-% multiple choices environment inspired by the below and improved by Vafa Khalighi
-% https://tex.stackexchange.com/questions/140923/how-to-automatically-align-the-four-choices-of-a-multiple-choice-question-in-exa
-% MultipltChoices Environment.
-\newdimen\uni@ChoiceLabelWidth
-\newdimen\uni@ChoiceLabelSep
-\uni@ChoiceLabelWidth=1.5em
-\uni@ChoiceLabelSep=0.5em
-\newcounter{uni@MultChoiceCount}
-\newcommand{\uni@InitialChoice}{%
-    \ifnum\value{uni@MultChoiceCount}>\z@
-        \cr
-    \fi
-    \stepcounter{uni@MultChoiceCount}%
-    \hbox to \uni@ChoiceLabelWidth{\hss(\alph{uni@MultChoiceCount})}%
-    \kern\uni@ChoiceLabelSep
-}
-\newcommand{\uni@FinalChoice}{%
-    \ifnum\value{uni@MultChoiceCount}>\z@
-        \egroup
-        \egroup
-    \fi
-    \stepcounter{uni@MultChoiceCount}%
-    \hspace{0pt plus 1pt}%
-    \hbox\bgroup
-    \hbox to \uni@ChoiceLabelWidth{\hss(\alph{uni@MultChoiceCount})}%
-    \kern\uni@ChoiceLabelSep
-        \vtop\bgroup
-        \hsize\uni@MultChoicesWidth
-        \advance\hsize-\uni@ChoiceLabelWidth
-        \advance\hsize-\uni@ChoiceLabelSep
-}
-\newbox\uni@MultChoicesBox
-\newdimen\uni@MultChoicesWidth
-\newcommand{\uni@ComputeMultChoicesWidth}[1]{%
-    \setbox\uni@MultChoicesBox\hbox{%
-        \vbox{%
-        \halign{%
-            ##\hfil\cr
-            #1\crcr
-        }%
-        }%
-    }%
-}
-\newenvironment{multiplechoices}{%
-    \setcounter{uni@MultChoiceCount}{0}%
-    \let\choice\uni@InitialChoice
-    \bidi@collect@long@body\uni@ComputeMultChoicesWidth
-}{%
-    \uni@MultChoicesWidth-\fontcharwd\font`
-    \advance\uni@MultChoicesWidth\wd\uni@MultChoicesBox
-    \ifdim\uni@MultChoicesWidth>0.5\linewidth
-        \uni@MultChoicesWidth=\linewidth
-    \else
-        \ifdim\uni@MultChoicesWidth>0.25\linewidth
-        \uni@MultChoicesWidth=0.5\linewidth
-        \else
-        \uni@MultChoicesWidth=0.25\linewidth
-        \fi
-    \fi
-    \setcounter{uni@MultChoiceCount}{0}%
-    \let\choice\uni@FinalChoice
-    \parindent\z@
-    \ifvmode
-    \else
-        \par
-    \fi
-    \the\@bidi@envbody
-    \egroup
-    \egroup
-}
-% End of multiplechoices
+%
 \def\DOTS{\hbox to 4cm {\dotfill}}%
 \def\bdots{\leavevmode\hbox to 14mm {\dotfill}\hbox to 2pt{}}
 %

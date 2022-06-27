@@ -1,3 +1,7 @@
+% 27 June 2022, Ver 0.96
+% Using `multiple-choice` package instead of hard-coding of `multiplechoices` environment inside the class.
+% `multiplechoices` environment is replaced by new `choices` environment.
+% الف replaced by الفـ for shorter width of the latter.
 % 22 June 2022, Ver 0.95
 % Some improvements to multiplechoices environment made by Vafa:
 % 1) uses \linewidth instead \textwidth to work correctly in enumerate environment
