@@ -226,11 +226,10 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \newcommand{\MakeTitle}{%\phantom{leavevmode}
 \centerline{{\Shafigh\scriptsize به نام خدا}}
 \centerline{\logo}
-%\vspace{-.3cm}\centerline{\tiny دانشکده علوم‌پایه}
 \vspace{-.3cm}\centerline{\tiny دانشکده \uni@ifexist\uni@faculty}
 \vspace{-.2cm}\centerline{\tiny گروه \uni@ifexist\uni@deptartment}
-\vspace{-.1cm}\centerline{\textbf{\tiny آزمون \uni@ifexist\uni@type}}
-\vspace{-2cm}
+\vspace{-.2cm}\centerline{\textbf{\tiny آزمون \uni@ifexist\uni@type}}
+\vspace{-1.8cm}
 \noindent
 \makebox[4cm][r]{نام و نام خانوادگی:}\hfill       \makebox[4cm][l]{ سالِ تحصیلی: \uni@ifexist\uni@year}\newline
 \makebox[4cm][r]{شماره‌ٔ دانشجویی:}\hfill        \makebox[4cm][l]{ نيمسالِ \uni@ifexist\uni@semester}\newline
