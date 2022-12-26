@@ -1,6 +1,6 @@
 \NeedsTeXFormat{LaTeX2e}
-\def\unistyle@date{27/06/2022}
-\def\unistyle@version{0.96}
+\def\unistyle@date{2/12/2022}
+\def\unistyle@version{0.97}
 \ProvidesClass{unistyle}[\unistyle@date\space version \unistyle@version\space
 Exam, Coures Syllabus, and Excercise Style for Universities]
 \RequirePackage{biditools}
@@ -82,6 +82,10 @@ shape aspect=2 ]
 %\@onlypreamble\unidetails
 % https://github.com/persiantex/xepersian/issues/17
 % \ExplSyntaxOn \cs_set_eq:NN \etex_iffontchar:D \tex_iffontchar:D \cs_undefine:N \c_one \int_const:Nn \c_one { 1 } \ExplSyntaxOff%
+% https://tex.stackexchange.com/questions/73/which-document-class-is-being-used
+\def\uni@getcl@ss#1.cls#2\relax{\def\uni@currentclass{#1}}%
+\def\uni@getclass{\expandafter\uni@getcl@ss\@filelist\relax}%
+\uni@getclass%
 \bidi@AtEndPreamble{%
     \RequirePackage{xepersian}%
     \settextfont[Scale=1]{XB Niloofar}%
@@ -460,28 +464,30 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \def\uni@s{{\tiny\raisebox{ .8em }{(ص)}}}%
 \newbox\uni@notebox%
 %\newdimen\uni@notedim%
-\newread\uni@reader%
-\newcount\uni@wisewordscount%
-\openin\uni@reader=wisewords.def\relax%
-\gdef\uni@empty@line{\par }
-\def\uni@wisewords{}
-%\def\uni@wisewords@makelist{%\csname ifcase\endcsname#1{}%
-    \loop%
-        \read\uni@reader to \uni@reader@line%
-        \unless\ifeof\uni@reader%
-            \ifx\uni@reader@line\uni@empty@line\else
-                \global\advance\uni@wisewordscount by 1\relax
-                %\csname or\endcsname
-                \typeout{\uni@reader@line}%
-%                \edef\uni@wisewords{\uni@wisewords\or\uni@reader@line}
-            \fi
-        \repeat%
-    \closein\uni@reader%
-%    \def\uni@wisewords{\ifcase\uni\uni@wisewords\fi}
-%    \csname fi\endcsname
-%    \typeout{TTTTTTTTTTTTTTTTTTTTTTT \the\uni@wisewordscount}
-%}
-
+\IfFileExists{wisewords.def}{%
+    \newread\uni@reader%
+    \newcount\uni@wisewordscount%
+    \openin\uni@reader=wisewords.def\relax%
+    \gdef\uni@empty@line{\par }
+    \def\uni@wisewords{}
+    %\def\uni@wisewords@makelist{%\csname ifcase\endcsname#1{}%
+        \loop%
+            \read\uni@reader to \uni@reader@line%
+            \unless\ifeof\uni@reader%
+                \ifx\uni@reader@line\uni@empty@line\else
+                    \global\advance\uni@wisewordscount by 1\relax
+                    %\csname or\endcsname
+                    \typeout{\uni@reader@line}%
+    %                \edef\uni@wisewords{\uni@wisewords\or\uni@reader@line}
+                \fi
+            \repeat%
+        \closein\uni@reader%
+    %    \def\uni@wisewords{\ifcase\uni\uni@wisewords\fi}
+    %    \csname fi\endcsname
+    %    \typeout{TTTTTTTTTTTTTTTTTTTTTTT \the\uni@wisewordscount}
+    %}
+}
+{\typeout{\uni@currentclass: Wise Word File Not Found!}}% wiseword.der does not exist
 %\RequirePackage[first=1, last=\the\uni@wisewordscount, counter=uni@rand]{lcg}
 \newcommand\kalamehakim[1][]{%
 \ifthenelse{\equal{#1}{}}%
@@ -512,6 +518,7 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
 \or{\lr{Integrity has no need of rules. \footnotesize Albert Camus}\global\uni@latinquotetrue}%20
 \or{\lr{Man is the only creature that refuses to be what he is. \footnotesize Albert Camus}\global\uni@latinquotetrue}%21
 \or{\lr{He who asks a question is a fool for five minutes; he who does not ask a question remains a fool forever.\footnotesize{ }Chinese Proverb}\global\uni@latinquotetrue}%22
+\or{\lr{A computer is like air conditioning – it becomes useless when you open Windows. \footnotesize Linus Torvalds}\global\uni@latinquotetrue}%23
 \fi%
 }
 \ifuni@latinquote\begin{latin}\fi

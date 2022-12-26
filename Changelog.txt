@@ -1,3 +1,6 @@
+% 26 December 2022, Ver 0.97
+% fix issue when there is no `wiseword.def` file
+% \uni@currentclass macro for class name
 % 27 June 2022, Ver 0.96
 % Using `multiple-choice` package instead of hard-coding of `multiplechoices` environment inside the class.
 % `multiplechoices` environment is replaced by new `choices` environment.
