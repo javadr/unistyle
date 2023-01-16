@@ -141,19 +141,26 @@ before=\raggedcolumns\LTRmulticolcolumns\begin{multicols}{2},after=\end{multicol
     keywordstyle=\color{black}\bfseries,
     numberstyle=\tiny\Yas,
     columns=flexible,
-%    identifierstyle=\color{red},           % nothing happens
-%    commentstyle=\color{blue},
-%    stringstyle=\color{green}\ttfamily,      % typewriter type for strings
     showstringspaces=false,     % no special string spaces
     numbers=left,
     numbersep=5pt,
     tabsize=2,
     frameround=tftf,
     frame=ltbr,
-%    backgroundcolor=\color{green},
-%    xleftmargin=35pt
     }
 %
+\RequirePackage[skins,listings,breakable]{tcolorbox}
+\DeclareTCBListing{code}{ s O{listing only} m }{%
+    IfBooleanT={#1}{listing and comment},
+    breakable,
+    listing options={frame=, language=python, escapechar={\%}},
+    size=fbox,boxrule=.5pt,frame hidden,arc=2pt,
+    colback=white,%yellow!25!white,
+    colframe=gray!75!black,
+    title=#3, #2,
+}
+\bidi@BeforeBeginEnvironment{code}{\setLTR}
+\bidi@AfterEndEnvironment{code}{\setRTL}
 \def\questionbox{\framebox[9mm]{?}}%
 \def\uni@clock@get#1:#2;{\def\uni@clock@hour{#1}\def\uni@clock@min{#2}}%
 \def\uni@stripmin#1:{\edef\uni@clock@min{#1}}%
